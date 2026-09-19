@@ -1,184 +1,498 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Aquaponics Dashboard</title>
+<title>Aquaponics — System Monitor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-* { box-sizing: border-box; }
+:root{
+  --bg: #0b1622;
+  --bg-panel: #122436;
+  --bg-raised: #1a3247;
+  --line: rgba(200, 226, 232, 0.14);
+  --line-strong: rgba(200, 226, 232, 0.30);
+  --text: #f4faf8;
+  --text-dim: #a9c3d4;
+  --text-faint: #7891a3;
 
-body {
+  --teal: #2ee6b8;
+  --teal-dim: rgba(46, 230, 184, 0.18);
+  --amber: #ffb648;
+  --amber-dim: rgba(255, 182, 72, 0.18);
+  --coral: #ff5c6c;
+  --coral-dim: rgba(255, 92, 108, 0.18);
+  --sky: #43c6ff;
+  --sky-dim: rgba(67, 198, 255, 0.18);
+  --violet: #b98bff;
+  --violet-dim: rgba(185, 139, 255, 0.18);
+  --pink: #ff6fae;
+  --pink-dim: rgba(255, 111, 174, 0.18);
+
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+}
+
+*{ box-sizing: border-box; }
+html{ background: var(--bg); }
+
+body{
   margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: radial-gradient(circle at top, #1e293b, #0f172a);
-  color: white;
+  font-family: var(--sans);
+  background:
+    radial-gradient(circle at 10% 6%, rgba(46,230,184,0.10), transparent 42%),
+    radial-gradient(circle at 90% 12%, rgba(67,198,255,0.08), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(255,182,72,0.07), transparent 45%),
+    radial-gradient(circle at 15% 90%, rgba(185,139,255,0.06), transparent 45%),
+    var(--bg);
+  background-attachment: fixed;
+  color: var(--text);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-h1 {
-  text-align: center;
-  color: #38bdf8;
-  margin: 25px 10px 10px;
-  font-size: 28px;
-  letter-spacing: 1px;
+body::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(rgba(200,226,232,0.05) 1px, transparent 1px);
+  background-size: 26px 26px;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 18px;
-  padding: 20px;
-  flex: 1;
+.page{ position: relative; z-index: 1; }
+
+.topbar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 32px;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.08);
-  padding: 20px;
-  border-radius: 18px;
-  text-align: center;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-  transition: 0.3s ease;
-}
+.brand{ display: flex; align-items: baseline; gap: 10px; }
 
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
-}
-
-.title { font-size: 16px; color: #94a3b8; margin-bottom: 8px; letter-spacing: 0.5px; }
-.value { font-size: 2.2em; font-weight: bold; color: #e2e8f0; }
-
-.status {
-  margin-top: 10px;
-  padding: 6px 14px;
-  border-radius: 20px;
-  display: inline-block;
-  font-weight: bold;
+.brand .mark{
+  font-family: var(--mono);
   font-size: 13px;
-  transition: 0.3s;
+  color: #06231c;
+  background: var(--teal);
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+  font-weight: 600;
 }
 
-.low { background: #facc15; color: #1e293b; box-shadow: 0 0 10px rgba(250,204,21,0.5); }
-.normal { background: #22c55e; color: white; box-shadow: 0 0 10px rgba(34,197,94,0.5); }
-.high { background: #ef4444; color: white; box-shadow: 0 0 10px rgba(239,68,68,0.5); }
+.brand h1{ font-family: var(--sans); font-weight: 700; font-size: 19px; margin: 0; color: var(--text); }
 
-#aerator { font-size: 1.8em; font-weight: bold; color: #e2e8f0; }
-.error { color: #ef4444; font-weight: bold; }
+.status-pill{
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-.history-section { padding: 0 20px 30px; }
-.history-title { color: #38bdf8; font-size: 18px; margin-bottom: 12px; letter-spacing: 0.5px; }
+.status-dot{ width: 8px; height: 8px; border-radius: 50%; background: var(--text-faint); }
+.status-dot.live{
+  background: var(--teal);
+  box-shadow: 0 0 10px 2px rgba(46,230,184,0.8);
+  animation: pulse 2s ease-in-out infinite;
+}
 
-.history-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: rgba(255,255,255,0.05);
-  border-radius: 18px;
+@keyframes pulse{
+  0%, 100% { box-shadow: 0 0 8px 1px rgba(46,230,184,0.6); }
+  50% { box-shadow: 0 0 14px 4px rgba(46,230,184,0.95); }
+}
+
+section{ padding: 28px 32px; }
+
+.section-head{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.section-head h2{ font-size: 16px; font-weight: 600; margin: 0; color: var(--text); }
+.section-head p{ margin: 2px 0 0; font-size: 13px; color: var(--text-dim); }
+
+.sensor-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 10px;
   overflow: hidden;
 }
 
-.history-table th {
-  background: rgba(56,189,248,0.15);
-  color: #38bdf8;
-  padding: 12px 16px;
-  text-align: left;
-  font-size: 13px;
-  letter-spacing: 0.5px;
+.card{
+  background: var(--bg-panel);
+  padding: 22px 20px;
+  border-top: 3px solid transparent;
 }
 
-.history-table td {
+.card.accent-temp{ border-top-color: var(--amber); }
+.card.accent-ph{ border-top-color: var(--sky); }
+.card.accent-do{ border-top-color: var(--teal); }
+.card.accent-aerator{ border-top-color: var(--violet); }
+.card.accent-feed{ border-top-color: var(--pink); }
+
+.card .title{ font-family: var(--mono); font-size: 12px; margin-bottom: 14px; font-weight: 500; }
+.card.accent-temp .title{ color: var(--amber); }
+.card.accent-ph .title{ color: var(--sky); }
+.card.accent-do .title{ color: var(--teal); }
+.card.accent-aerator .title{ color: var(--violet); }
+.card.accent-feed .title{ color: var(--pink); }
+
+.card .value{ font-family: var(--mono); font-size: 2.1em; font-weight: 600; color: var(--text); line-height: 1; }
+.card .unit{ font-size: 0.4em; color: var(--text-dim); margin-left: 4px; }
+
+.status{
+  margin-top: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.low{ background: var(--amber); color: #2b1d02; }
+.normal{ background: var(--teal); color: #06231c; }
+.high{ background: var(--coral); color: #2a0508; }
+.error{ color: var(--coral); font-weight: 600; }
+
+.history-table{ width: 100%; border-collapse: collapse; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+
+.history-table th{
+  background: var(--bg-raised);
+  color: var(--sky);
+  font-family: var(--mono);
+  font-weight: 600;
   padding: 11px 16px;
-  font-size: 14px;
-  color: #e2e8f0;
-  border-top: 1px solid rgba(255,255,255,0.05);
-}
-
-.history-table tr:hover td { background: rgba(255,255,255,0.04); }
-
-.mode-badge {
-  background: #22c55e;
-  color: white;
-  padding: 3px 10px;
-  border-radius: 12px;
+  text-align: left;
   font-size: 12px;
-  font-weight: bold;
+  border-bottom: 1px solid var(--line);
 }
 
-footer {
-  background: rgba(15, 23, 42, 0.9);
-  border-top: 1px solid rgba(255,255,255,0.08);
-  text-align: center;
-  padding: 18px;
-  color: #94a3b8;
+.history-table td{
+  padding: 11px 16px;
+  font-size: 13.5px;
+  color: var(--text);
+  border-top: 1px solid var(--line);
+  background: var(--bg-panel);
 }
 
-footer strong { display: block; color: #38bdf8; font-size: 18px; margin-bottom: 6px; }
-#lastUpdate { display: block; font-size: 12px; color: #cbd5e1; margin: 6px 0; }
+.mode-badge{
+  font-family: var(--mono);
+  color: #06231c;
+  background: var(--teal);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
 
-@media (max-width: 600px) { .value { font-size: 1.6em; } }
+.calendar-panel{ border: 1px solid var(--line); border-radius: 10px; background: var(--bg-panel); padding: 24px; }
+
+.growth-stats{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 22px;
+}
+
+.growth-stats .g-card{ background: var(--bg-raised); padding: 16px 18px; border-top: 3px solid transparent; }
+.growth-stats .g-card:nth-child(1){ border-top-color: var(--teal); }
+.growth-stats .g-card:nth-child(2){ border-top-color: var(--sky); }
+.growth-stats .g-card:nth-child(3){ border-top-color: var(--amber); }
+.g-card .title{ font-family: var(--mono); font-size: 11.5px; color: var(--text-dim); margin-bottom: 8px; }
+.g-card .value{ font-family: var(--mono); font-size: 1.7em; font-weight: 600; color: var(--amber); }
+.g-card .value.teal{ color: var(--teal); }
+
+.progress-wrap{ margin-bottom: 24px; }
+
+.progress-labels{
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+.progress-track{
+  position: relative;
+  height: 10px;
+  background: var(--bg-raised);
+  border-radius: 5px;
+  border: 1px solid var(--line);
+  overflow: visible;
+}
+
+.progress-fill{
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  background: linear-gradient(90deg, var(--teal), var(--sky), var(--amber));
+  border-radius: 5px;
+  width: 0%;
+  transition: width 0.4s ease;
+  box-shadow: 0 0 10px rgba(46,230,184,0.5);
+}
+
+.progress-band{
+  position: absolute;
+  top: -4px; bottom: -4px;
+  background: rgba(255,92,108,0.18);
+  border-left: 1px dashed var(--coral);
+  border-right: 1px dashed var(--coral);
+}
+
+.settings-row{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 26px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.settings-row label{ display: flex; flex-direction: column; gap: 5px; }
+
+.settings-row input{
+  background: var(--bg-raised);
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  width: 130px;
+}
+
+.settings-row input:focus{ outline: none; border-color: var(--teal); box-shadow: 0 0 0 2px var(--teal-dim); }
+
+.calendar-body{ display: grid; grid-template-columns: minmax(240px, 1fr) minmax(260px, 1.1fr); gap: 28px; }
+
+@media (max-width: 820px){ .calendar-body{ grid-template-columns: 1fr; } }
+
+.dotgrid-title{ font-family: var(--mono); font-size: 12px; color: var(--text-dim); margin-bottom: 12px; }
+.dotgrid{ display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.dotgrid .day{ aspect-ratio: 1; border-radius: 3px; background: var(--bg-raised); border: 1px solid var(--line); }
+.dotgrid .day.fed{ background: var(--teal); border-color: var(--teal); box-shadow: 0 0 6px rgba(46,230,184,0.6); }
+.dotgrid .day.today{ border-color: var(--amber); border-width: 2px; }
+.dotgrid .day.future{ opacity: 0.35; }
+
+.legend{ display: flex; gap: 16px; margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+.legend span{ display: inline-flex; align-items: center; gap: 6px; }
+.legend .sw{ width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+
+.schedule-table{ width: 100%; border-collapse: collapse; font-size: 13px; }
+
+.schedule-table th{
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--sky);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.schedule-table td{ padding: 7px 10px; border-bottom: 1px solid var(--line); color: var(--text); }
+.schedule-table tr.current-week td{ background: var(--teal-dim); }
+.schedule-table tr.current-week td:first-child{ border-left: 3px solid var(--teal); }
+
+.schedule-table input{
+  width: 70px;
+  background: var(--bg-raised);
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  padding: 4px 6px;
+  border-radius: 5px;
+}
+
+.schedule-table input:focus{ outline: none; border-color: var(--teal); box-shadow: 0 0 0 2px var(--teal-dim); }
+.schedule-note{ font-size: 12px; color: var(--text-dim); margin-top: 10px; line-height: 1.5; }
+
+footer{ border-top: 1px solid var(--line); text-align: center; padding: 22px; color: var(--text-faint); font-size: 12px; }
+footer strong{ display: block; color: var(--sky); font-family: var(--mono); font-size: 13px; margin-bottom: 6px; font-weight: 600; }
+#lastUpdate{ display: block; font-size: 11.5px; margin: 6px 0; }
+
+@media (max-width: 600px){
+  section{ padding: 22px 18px; }
+  .topbar{ padding: 18px; }
+}
 </style>
 </head>
 
 <body>
+<div class="page">
 
-<h1>🌱 Aquaponics Monitoring System</h1>
-
-<div class="container">
-  <div class="card">
-    <div class="title">Temperature</div>
-    <div id="temp" class="value">--</div>
-    <div id="tempStatus" class="status">--</div>
+  <div class="topbar">
+    <div class="brand">
+      <span class="mark">MCU</span>
+      <h1>Aquaponics System Monitor</h1>
+    </div>
+    <div class="status-pill">
+      <span class="status-dot live" id="liveDot"></span>
+      <span id="lastUpdate">Last update: --</span>
+    </div>
   </div>
 
-  <div class="card">
-    <div class="title">pH Level</div>
-    <div id="ph" class="value">--</div>
-    <div id="phStatus" class="status">--</div>
-  </div>
+  <section>
+    <div class="section-head">
+      <div>
+        <h2>Live readings</h2>
+        <p>Sensor data streamed from the ESP32 every few seconds</p>
+      </div>
+    </div>
 
-  <div class="card">
-    <div class="title">Dissolved Oxygen</div>
-    <div id="do" class="value">--</div>
-  </div>
+    <div class="sensor-grid">
+      <div class="card accent-temp">
+        <div class="title">Temperature</div>
+        <div id="temp" class="value">--<span class="unit">°C</span></div>
+        <div id="tempStatus" class="status">--</div>
+      </div>
+      <div class="card accent-ph">
+        <div class="title">pH level</div>
+        <div id="ph" class="value">--</div>
+        <div id="phStatus" class="status">--</div>
+      </div>
+      <div class="card accent-do">
+        <div class="title">Dissolved oxygen</div>
+        <div id="do" class="value">--<span class="unit">mg/L</span></div>
+      </div>
+      <div class="card accent-aerator">
+        <div class="title">Aerator</div>
+        <div id="aerator" class="value">--</div>
+      </div>
+      <div class="card accent-feed">
+        <div class="title">Next feeding</div>
+        <div id="countdown" class="value" style="font-size:1.7em;">--:--:--</div>
+        <div id="feedModeLabel" class="status normal">-- hour mode</div>
+      </div>
+    </div>
+  </section>
 
-  <div class="card">
-    <div class="title">Aerator Status</div>
-    <div id="aerator" class="value">--</div>
-  </div>
+  <section>
+    <div class="section-head">
+      <div>
+        <h2>Feeding history</h2>
+        <p>Last logged feeder activations</p>
+      </div>
+    </div>
+    <table class="history-table">
+      <thead><tr><th>#</th><th>Date &amp; time</th><th>Mode</th></tr></thead>
+      <tbody id="feedHistory"><tr><td colspan="3">Loading...</td></tr></tbody>
+    </table>
+  </section>
 
-  <div class="card">
-    <div class="title">Next Feeding</div>
-    <div id="countdown" class="value">--:--:--</div>
-    <div id="feedModeLabel" class="status normal">-- Hour Mode</div>
-  </div>
+  <section>
+    <div class="section-head">
+      <div>
+        <h2>Feeding &amp; growth calendar</h2>
+        <p>Tracks days since stocking so feed portions can be raised as the tilapia grow, up to harvest</p>
+      </div>
+    </div>
+
+    <div class="calendar-panel">
+      <div class="growth-stats">
+        <div class="g-card">
+          <div class="title">Day since stocking</div>
+          <div class="value teal" id="gDay">--</div>
+        </div>
+        <div class="g-card">
+          <div class="title">Feeding week</div>
+          <div class="value teal" id="gWeek">--</div>
+        </div>
+        <div class="g-card">
+          <div class="title">Days to harvest window</div>
+          <div class="value" id="gToHarvest">--</div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-labels">
+          <span>Week 1</span>
+          <span id="progressMaxLabel">Week 20</span>
+        </div>
+        <div class="progress-track" id="progressTrack">
+          <div class="progress-band" id="progressBand"></div>
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="settings-row">
+        <label>Stocking date
+          <input type="date" id="stockingDate">
+        </label>
+        <label>Harvest window — from (week)
+          <input type="number" id="harvestMin" min="1" max="52" value="13">
+        </label>
+        <label>Harvest window — to (week)
+          <input type="number" id="harvestMax" min="1" max="52" value="20">
+        </label>
+      </div>
+
+      <div class="calendar-body">
+        <div>
+          <div class="dotgrid-title">Last 42 days — filled square = fed that day</div>
+          <div class="dotgrid" id="dotgrid"></div>
+          <div class="legend">
+            <span><span class="sw" style="background:var(--teal)"></span>Fed</span>
+            <span><span class="sw" style="background:var(--bg-raised);border:1px solid var(--line)"></span>No log</span>
+            <span><span class="sw" style="background:var(--bg-raised);border:2px solid var(--amber)"></span>Today</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="dotgrid-title">Weekly feed portion</div>
+          <table class="schedule-table" id="scheduleTable">
+            <thead><tr><th>Week</th><th>Feed / meal (g)</th><th>Notes</th></tr></thead>
+            <tbody id="scheduleBody"></tbody>
+          </table>
+          <!--
+<div class="schedule-note">
+  Defaults are placeholders — replace the grams column with the figures from your adviser's feeding table (the paper cites ~5% of body weight/day; without a load cell, portions have to be entered manually). Values save to this browser automatically.
 </div>
+-->
+        </div>
+      </div>
+    </div>
+  </section>
 
-<div class="history-section">
-  <h2 class="history-title">🍽️ Feeding History</h2>
-  <table class="history-table">
-    <thead>
-      <tr><th>#</th><th>Date & Time</th><th>Mode</th></tr>
-    </thead>
-    <tbody id="feedHistory">
-      <tr><td colspan="3">Loading...</td></tr>
-    </tbody>
-  </table>
+  <footer>
+    <strong>Aquaponics System Monitor</strong>
+    <span id="lastUpdateFooter">Last update: --</span>
+    <div>ESP32 · Node.js · MongoDB · IoT monitoring platform</div>
+    <div style="margin-top:6px;">© 2026</div>
+  </footer>
+
 </div>
-
-<footer>
-  <strong>🌱 Aquaponics Monitoring System</strong>
-  <span id="lastUpdate">Last Update: --</span>
-  <div>ESP32 • Node.js • MongoDB • IoT Monitoring Platform</div>
-  <div style="margin-top:8px;">© 2026 All Rights Reserved</div>
-</footer>
 
 <script>
 // ===== CHANGE THIS IF YOUR RENDER URL IS DIFFERENT =====
 const API_BASE = "https://aquaponics-backend-sgr7.onrender.com";
-
+// code for testing locally: const API_BASE = "http://localhost:3000";
 let nextFeedMs = null;
 let lastReceivedSeconds = null;
 
@@ -209,12 +523,14 @@ function loadDoc() {
     try {
       const data = JSON.parse(this.responseText);
 
-      document.getElementById("lastUpdate").innerHTML =
-        "Last Update: " + new Date().toLocaleString();
+      const stamp = new Date().toLocaleString();
+      document.getElementById("lastUpdate").innerText = "Last update: " + stamp;
+      document.getElementById("lastUpdateFooter").innerText = "Last update: " + stamp;
+      document.getElementById("liveDot").classList.add("live");
 
-      document.getElementById("temp").innerText = data.temp ?? "--";
+      document.getElementById("temp").innerHTML = (data.temp ?? "--") + "<span class='unit'>°C</span>";
       document.getElementById("ph").innerText   = data.ph  ?? "--";
-      document.getElementById("do").innerText   = data.do  ?? "--";
+      document.getElementById("do").innerHTML   = (data.do ?? "--") + "<span class='unit'>mg/L</span>";
 
       let tempEl = document.getElementById("tempStatus");
       tempEl.innerText = data.tempStatus ?? "--";
@@ -225,8 +541,10 @@ function loadDoc() {
       phEl.className = "status " + getClass(data.phStatus);
 
       let doValue = parseFloat(data.do);
-      document.getElementById("aerator").innerText =
-        !isNaN(doValue) ? (doValue >= 4.5 ? "OFF" : "ON") : "--";
+      let aeratorText = data.aerator_status
+        ? String(data.aerator_status).toUpperCase()
+        : (!isNaN(doValue) ? (doValue >= 4.5 ? "OFF" : "ON") : "--");
+      document.getElementById("aerator").innerText = aeratorText;
 
       if (data.seconds_until_feed !== undefined && data.seconds_until_feed !== null) {
         const incoming = parseInt(data.seconds_until_feed);
@@ -237,7 +555,7 @@ function loadDoc() {
       }
 
       if (data.mode) {
-        document.getElementById("feedModeLabel").innerText = data.mode + " Hour Mode";
+        document.getElementById("feedModeLabel").innerText = data.mode + " hour mode";
       }
     } catch (e) {
       console.log(e);
@@ -246,10 +564,13 @@ function loadDoc() {
   };
   xhttp.onerror = function() {
     document.getElementById("aerator").innerHTML = "<span class='error'>CONNECTION ERROR</span>";
+    document.getElementById("liveDot").classList.remove("live");
   };
   xhttp.open("GET", API_BASE + "/api/r_sensor?t=" + new Date().getTime(), true);
   xhttp.send();
 }
+
+let feedLogDates = [];
 
 function loadFeedHistory() {
   const xhttp = new XMLHttpRequest();
@@ -257,13 +578,24 @@ function loadFeedHistory() {
     try {
       const data = JSON.parse(this.responseText);
       const tbody = document.getElementById("feedHistory");
+
+      feedLogDates = data.map(row => row.feed_time);
+      renderDotGrid();
+
       if (data.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='3' style='text-align:center;color:#64748b;'>No feeding records yet</td></tr>";
+        tbody.innerHTML = "<tr><td colspan='3' style='text-align:center;color:var(--text-faint);'>No feeding records yet</td></tr>";
         return;
       }
+
       let html = "";
-      data.forEach((row, index) => {
-        html += `<tr><td style="color:#64748b;">${index + 1}</td><td>${row.feed_time}</td><td><span class="mode-badge">${row.mode}H Mode</span></td></tr>`;
+      data.slice(0, 15).forEach((row, index) => {
+        const dt = new Date(row.feed_time + " UTC").toLocaleString("en-PH", {
+  timeZone: "Asia/Manila",
+  year: "numeric", month: "2-digit", day: "2-digit",
+  hour: "2-digit", minute: "2-digit", second: "2-digit",
+  hour12: false
+});
+html += `<tr><td style="color:var(--text-faint);">${index + 1}</td><td>${dt}</td><td><span class="mode-badge">${row.mode}H mode</span></td></tr>`;
       });
       tbody.innerHTML = html;
     } catch(e) { console.log(e); }
@@ -272,9 +604,173 @@ function loadFeedHistory() {
   xhttp.send();
 }
 
+/* ============== GROWTH CALENDAR (same as PHP version) ============== */
+
+const DAY_MS = 86400000;
+
+function todayISO() {
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+
+function loadGrowthSettings() {
+  const stockingInput = document.getElementById("stockingDate");
+  const minInput = document.getElementById("harvestMin");
+  const maxInput = document.getElementById("harvestMax");
+
+  stockingInput.value = localStorage.getItem("aqua_stockingDate") || todayISO();
+  minInput.value = localStorage.getItem("aqua_harvestMin") || 13;
+  maxInput.value = localStorage.getItem("aqua_harvestMax") || 20;
+
+  [stockingInput, minInput, maxInput].forEach(el => {
+    el.addEventListener("change", () => {
+      localStorage.setItem("aqua_stockingDate", stockingInput.value);
+      localStorage.setItem("aqua_harvestMin", minInput.value);
+      localStorage.setItem("aqua_harvestMax", maxInput.value);
+      renderGrowthStats();
+      renderScheduleTable();
+      renderDotGrid();
+    });
+  });
+}
+
+function getDaysSinceStocking() {
+  const stockingVal = document.getElementById("stockingDate").value;
+  if (!stockingVal) return 0;
+  const start = new Date(stockingVal + "T00:00:00");
+  return Math.floor((new Date() - start) / DAY_MS);
+}
+
+function renderGrowthStats() {
+  const days = getDaysSinceStocking();
+  const week = days >= 0 ? Math.floor(days / 7) + 1 : 0;
+  const harvestMin = parseInt(document.getElementById("harvestMin").value) || 13;
+  const harvestMax = parseInt(document.getElementById("harvestMax").value) || 20;
+
+  document.getElementById("gDay").innerText = days >= 0 ? days : "--";
+  document.getElementById("gWeek").innerText = week > 0 ? week : "--";
+
+  const daysToHarvest = (harvestMin * 7) - days;
+  const gToHarvest = document.getElementById("gToHarvest");
+
+  if (days < 0) {
+    gToHarvest.innerText = "--";
+    gToHarvest.className = "value";
+  } else if (daysToHarvest > 0) {
+    gToHarvest.innerText = daysToHarvest;
+    gToHarvest.className = "value teal";
+  } else if (week <= harvestMax) {
+    gToHarvest.innerText = "In window";
+    gToHarvest.className = "value";
+    gToHarvest.style.color = "var(--amber)";
+  } else {
+    gToHarvest.innerText = "Past window";
+    gToHarvest.className = "value";
+    gToHarvest.style.color = "var(--coral)";
+  }
+
+  const totalWeeks = Math.max(harvestMax, 1);
+  const pct = Math.min(100, Math.max(0, (week / totalWeeks) * 100));
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressMaxLabel").innerText = "Week " + totalWeeks;
+
+  const band = document.getElementById("progressBand");
+  const bandLeft = Math.min(100, (harvestMin / totalWeeks) * 100);
+  const bandRight = Math.min(100, (harvestMax / totalWeeks) * 100);
+  band.style.left = bandLeft + "%";
+  band.style.width = Math.max(0, bandRight - bandLeft) + "%";
+}
+
+function defaultSchedule(maxWeek) {
+  const rows = [];
+  for (let w = 1; w <= maxWeek; w++) {
+    rows.push({ week: w, grams: Math.round(15 + (w - 1) * 4.5), note: w === 1 ? "Fingerling stage" : "" });
+  }
+  return rows;
+}
+
+function renderScheduleTable() {
+  const harvestMax = parseInt(document.getElementById("harvestMax").value) || 20;
+  const currentWeek = Math.max(1, Math.floor(getDaysSinceStocking() / 7) + 1);
+
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem("aqua_feedSchedule")); } catch(e) {}
+  let rows = (saved && saved.length === harvestMax) ? saved : defaultSchedule(harvestMax);
+
+  const tbody = document.getElementById("scheduleBody");
+  tbody.innerHTML = "";
+
+  rows.forEach(row => {
+    const tr = document.createElement("tr");
+    if (row.week === currentWeek) tr.classList.add("current-week");
+    tr.innerHTML = `
+      <td>Week ${row.week}</td>
+      <td><input type="number" min="0" value="${row.grams}" data-week="${row.week}" class="grams-input"></td>
+      <td>${row.week === currentWeek ? "Current week" : (row.note || "")}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  tbody.querySelectorAll(".grams-input").forEach(input => {
+    input.addEventListener("change", () => {
+      const w = parseInt(input.dataset.week);
+      rows = rows.map(r => r.week === w ? { ...r, grams: parseInt(input.value) || 0 } : r);
+      localStorage.setItem("aqua_feedSchedule", JSON.stringify(rows));
+    });
+  });
+
+  const currentRow = tbody.querySelector(".current-week");
+  if (currentRow) currentRow.scrollIntoView({ block: "nearest" });
+}
+
+function renderDotGrid() {
+  const grid = document.getElementById("dotgrid");
+  grid.innerHTML = "";
+
+  const stockingVal = document.getElementById("stockingDate").value;
+  const start = stockingVal ? new Date(stockingVal + "T00:00:00") : new Date();
+  const now = new Date();
+
+  const totalCells = 42;
+  const endDay = Math.floor((now - start) / DAY_MS);
+  const startCellDay = endDay - (totalCells - 1);
+
+  const fedDaySet = new Set(
+    feedLogDates.map(ts => {
+      const d = new Date(ts.replace(" ", "T"));
+      return d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
+    })
+  );
+
+  for (let i = startCellDay; i <= endDay; i++) {
+    const cellDate = new Date(start.getTime() + i * DAY_MS);
+    const key = cellDate.getFullYear() + "-" + cellDate.getMonth() + "-" + cellDate.getDate();
+
+    const div = document.createElement("div");
+    div.className = "day";
+    if (i === endDay) div.classList.add("today");
+    if (i > endDay) div.classList.add("future");
+    if (fedDaySet.has(key) && i <= endDay) div.classList.add("fed");
+    div.title = cellDate.toDateString();
+    grid.appendChild(div);
+  }
+}
+
+function initGrowthCalendar() {
+  loadGrowthSettings();
+  renderGrowthStats();
+  renderScheduleTable();
+  renderDotGrid();
+  setInterval(renderGrowthStats, 60000);
+}
+
+/* ============== INIT ============== */
+
 loadDoc();
 startCountdown();
 loadFeedHistory();
+initGrowthCalendar();
+
 setInterval(loadDoc, 1000);
 setInterval(loadFeedHistory, 10000);
 </script>
