@@ -156,8 +156,8 @@
   .wizard-row input{background:var(--bg-card);border:1px solid var(--line-strong);color:var(--text);font-family:var(--sans);font-size:14px;padding:8px 12px;border-radius:8px;width:100%;min-width:0}
   .wizard-row input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(2,132,199,.15)}
   .wizard-minihead{font-size:12px;font-weight:600;color:var(--text-dim);letter-spacing:.02em;margin-bottom:10px}
-  .wizard-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-  @media (max-width:600px){.wizard-grid{grid-template-columns:repeat(2,1fr)}}
+  .wizard-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:20px}
+  @media (max-width:600px){.wizard-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
   .wizard-grid label{display:flex;flex-direction:column;gap:4px;font-size:11.5px;font-weight:500;color:var(--text-mid);min-width:0}
   .wizard-grid input{background:var(--bg-card);border:1px solid var(--line-strong);color:var(--text);font-family:var(--mono);font-size:13px;padding:6px 10px;border-radius:6px;width:100%;min-width:0}
   .wizard-grid input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(2,132,199,.15)}
@@ -376,9 +376,6 @@ let appConfig = {
 };
 let hasSavedConfig = false;
 
-/* =====================================================
-   HELPERS
-   ===================================================== */
 function todayISO() {
   const d = new Date();
   return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
@@ -411,9 +408,6 @@ function prettyStatus(status) {
   return status || "--";
 }
 
-/* =====================================================
-   CONFIG — fetch / save / wizard
-   ===================================================== */
 function loadConfig() {
   const x = new XMLHttpRequest();
   x.onload = function() {
@@ -529,9 +523,6 @@ function performHarvest() {
   x.send();
 }
 
-/* =====================================================
-   DERIVED UI — growth stats, progress bar, banner
-   ===================================================== */
 function refreshDerivedUI() {
   renderGrowthStats();
   renderCalendar();
@@ -598,9 +589,6 @@ function checkHarvestBanner() {
   }
 }
 
-/* =====================================================
-   LIVE SENSOR POLL
-   ===================================================== */
 function startCountdown() {
   setInterval(() => {
     if (nextFeedMs === null) return;
@@ -679,9 +667,6 @@ function loadDoc() {
   x.send();
 }
 
-/* =====================================================
-   FEED HISTORY
-   ===================================================== */
 function loadFeedHistory() {
   const x = new XMLHttpRequest();
   x.onload = function() {
@@ -717,9 +702,6 @@ function loadFeedHistory() {
   x.send();
 }
 
-/* =====================================================
-   CALENDAR
-   ===================================================== */
 let calendarCursor = new Date();
 
 function setupCalendarNav() {
@@ -829,9 +811,6 @@ function closeFeedModal() {
   document.getElementById("feedModal").classList.remove("active");
 }
 
-/* =====================================================
-   BOOT
-   ===================================================== */
 document.getElementById("modalCloseBtn").addEventListener("click", closeFeedModal);
 document.getElementById("feedModal").addEventListener("click", (e) => {
   if (e.target.id === "feedModal") closeFeedModal();
