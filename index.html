@@ -152,14 +152,14 @@
   /* Wizard form */
   .wizard-form{margin-bottom:18px}
   .wizard-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:20px}
-  .wizard-row label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:500;color:var(--text-mid)}
-  .wizard-row input{background:var(--bg-card);border:1px solid var(--line-strong);color:var(--text);font-family:var(--sans);font-size:14px;padding:8px 12px;border-radius:8px}
+  .wizard-row label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:500;color:var(--text-mid);min-width:0}
+  .wizard-row input{background:var(--bg-card);border:1px solid var(--line-strong);color:var(--text);font-family:var(--sans);font-size:14px;padding:8px 12px;border-radius:8px;width:100%;min-width:0}
   .wizard-row input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(2,132,199,.15)}
   .wizard-minihead{font-size:12px;font-weight:600;color:var(--text-dim);letter-spacing:.02em;margin-bottom:10px}
   .wizard-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
   @media (max-width:600px){.wizard-grid{grid-template-columns:repeat(2,1fr)}}
-  .wizard-grid label{display:flex;flex-direction:column;gap:4px;font-size:11.5px;font-weight:500;color:var(--text-mid)}
-  .wizard-grid input{background:var(--bg-card);border:1px solid var(--line-strong);color:var(--text);font-family:var(--mono);font-size:13px;padding:6px 10px;border-radius:6px}
+  .wizard-grid label{display:flex;flex-direction:column;gap:4px;font-size:11.5px;font-weight:500;color:var(--text-mid);min-width:0}
+  .wizard-grid input{background:var(--bg-card);border:1px solid var(--line-strong);color:var(--text);font-family:var(--mono);font-size:13px;padding:6px 10px;border-radius:6px;width:100%;min-width:0}
   .wizard-grid input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(2,132,199,.15)}
   .wizard-actions{display:flex;gap:10px}
   .wizard-actions button{flex:1}
@@ -430,7 +430,6 @@ function loadConfig() {
       hasSavedConfig = appConfig.portions.length === 12 && appConfig.stockingDate;
 
       if (!hasSavedConfig) {
-        // First time — show wizard
         showWizard(false);
       } else {
         hideWizard();
@@ -483,7 +482,6 @@ function saveWizard() {
     portions.push(parseFloat(inp.value) || 0);
   });
 
-  // Basic validation
   if (!stockingDate) { alert("Please enter a stocking date."); return; }
   if (harvestStart >= harvestEnd) { alert("Harvest start week must be less than end week."); return; }
   if (portions.every(p => p <= 0)) { alert("Please enter at least one portion value."); return; }
