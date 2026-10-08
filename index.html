@@ -9,439 +9,171 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #f7f9fb;
-    --bg-card: #ffffff;
-    --bg-soft: #f1f5f9;
-    --line: #e5eaf0;
-    --line-strong: #d5dde5;
-    --text: #0f172a;
-    --text-mid: #475569;
-    --text-dim: #94a3b8;
-
-    --green: #059669;
-    --green-soft: #ecfdf5;
-    --blue: #0284c7;
-    --blue-soft: #eff6ff;
-    --amber: #d97706;
-    --amber-soft: #fffbeb;
-    --red: #dc2626;
-    --red-soft: #fef2f2;
-    --violet: #7c3aed;
-    --violet-soft: #f5f3ff;
-
-    --sans: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    --mono: 'JetBrains Mono', ui-monospace, "SF Mono", Menlo, monospace;
+    --bg:#f7f9fb; --bg-card:#fff; --bg-soft:#f1f5f9;
+    --line:#e5eaf0; --line-strong:#d5dde5;
+    --text:#0f172a; --text-mid:#475569; --text-dim:#94a3b8;
+    --green:#059669; --green-soft:#ecfdf5;
+    --blue:#0284c7; --blue-soft:#eff6ff;
+    --amber:#d97706; --amber-soft:#fffbeb;
+    --red:#dc2626; --red-soft:#fef2f2;
+    --violet:#7c3aed; --violet-soft:#f5f3ff;
+    --sans:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,"SF Mono",Menlo,monospace;
   }
+  *{box-sizing:border-box}
+  html{background:var(--bg)}
+  body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;-webkit-font-smoothing:antialiased}
+  .page{max-width:1280px;margin:0 auto;padding:28px 32px 48px}
 
-  *{ box-sizing: border-box; }
-  html{ background: var(--bg); }
-  body{
-    margin: 0;
-    font-family: var(--sans);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 15px;
-    -webkit-font-smoothing: antialiased;
+  /* ===== Harvest banner ===== */
+  .harvest-banner{
+    display:flex; align-items:center; gap:14px;
+    background:linear-gradient(90deg,#fef2f2,#fef2f2);
+    border:1px solid #fecaca;
+    border-left:4px solid var(--red);
+    padding:14px 20px;
+    border-radius:10px;
+    margin-bottom:22px;
   }
-
-  .page{
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 28px 32px 48px;
+  .harvest-banner .icon{font-size:22px}
+  .harvest-banner .msg{flex:1;font-size:14px;font-weight:500;color:#7f1d1d}
+  .harvest-banner .btn-harvest-small{
+    padding:8px 14px;background:var(--red);color:#fff;border:0;border-radius:6px;
+    font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;
   }
+  .harvest-banner .btn-harvest-small:hover{background:#b91c1c}
 
   /* ===== Header ===== */
-  .topbar{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 22px;
-    margin-bottom: 28px;
-    border-bottom: 1px solid var(--line);
-    flex-wrap: wrap;
-    gap: 14px;
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding-bottom:22px;margin-bottom:28px;border-bottom:1px solid var(--line);flex-wrap:wrap;gap:14px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand .logo{width:38px;height:38px;background:linear-gradient(135deg,#059669,#0284c7);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
+  .brand h1{font-size:20px;font-weight:600;margin:0;letter-spacing:-.01em}
+  .brand .sub{font-size:13px;color:var(--text-dim);margin-top:2px}
+  .header-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .btn-text{
+    padding:7px 12px;background:transparent;color:var(--text-mid);
+    border:1px solid var(--line-strong);border-radius:8px;
+    font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;
   }
-  .brand{ display: flex; align-items: center; gap: 12px; }
-  .brand .logo{
-    width: 38px; height: 38px;
-    background: linear-gradient(135deg, #059669, #0284c7);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 20px;
-  }
-  .brand h1{
-    font-size: 20px; font-weight: 600; margin: 0;
-    letter-spacing: -0.01em; color: var(--text);
-  }
-  .brand .sub{ font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+  .btn-text:hover{background:var(--bg-soft)}
+  .live-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:var(--bg-card);border:1px solid var(--line);border-radius:999px;font-size:13px;color:var(--text-mid)}
+  .live-dot{width:8px;height:8px;border-radius:50%;background:var(--text-dim)}
+  .live-dot.live{background:var(--green);box-shadow:0 0 0 3px rgba(5,150,105,.18)}
 
-  .live-pill{
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 8px 14px;
-    background: var(--bg-card);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    font-size: 13px; color: var(--text-mid);
-  }
-  .live-dot{
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--text-dim); position: relative;
-  }
-  .live-dot.live{
-    background: var(--green);
-    box-shadow: 0 0 0 3px rgba(5,150,105,0.18);
-  }
+  section{margin-bottom:32px}
+  .section-head{margin-bottom:16px}
+  .section-head h2{font-size:15px;font-weight:600;margin:0}
+  .section-head p{font-size:13.5px;color:var(--text-dim);margin:4px 0 0}
 
-  /* ===== Section ===== */
-  section{ margin-bottom: 32px; }
-  .section-head{ margin-bottom: 16px; }
-  .section-head h2{
-    font-size: 15px; font-weight: 600; margin: 0;
-    color: var(--text); letter-spacing: -0.005em;
-  }
-  .section-head p{ font-size: 13.5px; color: var(--text-dim); margin: 4px 0 0; }
+  .sensor-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  @media (max-width:1100px){.sensor-grid{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:720px){.sensor-grid{grid-template-columns:repeat(2,1fr)}}
 
-  /* ===== Sensor cards ===== */
-  .sensor-grid{
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
-  }
-  @media (max-width: 1100px){ .sensor-grid{ grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 720px){ .sensor-grid{ grid-template-columns: repeat(2, 1fr); } }
+  .card{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;transition:border-color .15s,box-shadow .15s;display:flex;flex-direction:column}
+  .card:hover{border-color:var(--line-strong);box-shadow:0 4px 18px rgba(15,23,42,.05)}
+  .card .label{font-size:12px;font-weight:500;color:var(--text-dim);letter-spacing:.02em;display:flex;align-items:center;gap:6px;margin-bottom:14px}
+  .card .label .ico{font-size:14px;opacity:.85}
+  .card .value{font-family:var(--mono);font-size:34px;font-weight:600;line-height:1;letter-spacing:-.02em;word-break:break-word}
+  .card .value.small{font-size:26px}
+  .card .unit{font-family:var(--sans);font-size:14px;color:var(--text-dim);font-weight:500;margin-left:4px}
+  .pill{display:inline-flex;align-items:center;gap:5px;margin-top:14px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;width:fit-content}
+  .pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .pill.normal{background:var(--green-soft);color:var(--green)}
+  .pill.low{background:var(--amber-soft);color:var(--amber)}
+  .pill.high{background:var(--red-soft);color:var(--red)}
+  .pill.idle{background:var(--bg-soft);color:var(--text-mid)}
+  .pill.on{background:var(--blue-soft);color:var(--blue)}
+  .pill.mode{background:var(--violet-soft);color:var(--violet)}
 
-  .card{
-    background: var(--bg-card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 20px 20px 18px;
-    transition: border-color 0.15s, box-shadow 0.15s;
-    display: flex; flex-direction: column;
-  }
-  .card:hover{
-    border-color: var(--line-strong);
-    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
-  }
+  .table-wrap{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  table{width:100%;border-collapse:collapse}
+  thead th{text-align:left;padding:13px 20px;font-size:12px;font-weight:500;color:var(--text-dim);background:var(--bg-soft);letter-spacing:.02em;border-bottom:1px solid var(--line)}
+  tbody td{padding:14px 20px;font-size:14px;color:var(--text);border-bottom:1px solid var(--line)}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover{background:#fafbfd}
+  .td-mono{font-family:var(--mono);font-size:13.5px;color:var(--text-mid)}
+  .td-num{color:var(--text-dim);font-variant-numeric:tabular-nums}
+  .mode-tag{display:inline-block;padding:3px 10px;background:var(--violet-soft);color:var(--violet);border-radius:6px;font-size:12px;font-weight:600}
+  .empty-row td{text-align:center;color:var(--text-dim);padding:32px 20px;font-size:14px}
 
-  .card .label{
-    font-size: 12px; font-weight: 500; color: var(--text-dim);
-    letter-spacing: 0.02em; display: flex; align-items: center; gap: 6px;
-    margin-bottom: 14px;
-  }
-  .card .label .ico{ font-size: 14px; opacity: 0.85; }
+  .panel{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:24px}
 
-  .card .value{
-    font-family: var(--mono);
-    font-size: 34px; font-weight: 600; color: var(--text);
-    line-height: 1; letter-spacing: -0.02em;
-    word-break: break-word;
-  }
-  .card .value.small{ font-size: 26px; }
-  .card .unit{
-    font-family: var(--sans);
-    font-size: 14px; color: var(--text-dim); font-weight: 500;
-    margin-left: 4px; letter-spacing: 0;
-  }
+  .growth-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+  .growth-stats .stat{background:var(--bg-soft);border-radius:10px;padding:16px 18px}
+  .growth-stats .stat .label{font-size:12px;color:var(--text-dim);margin-bottom:6px;font-weight:500}
+  .growth-stats .stat .value{font-family:var(--mono);font-size:26px;font-weight:600;letter-spacing:-.02em}
+  .growth-stats .stat .value.green{color:var(--green)}
+  .growth-stats .stat .value.amber{color:var(--amber)}
+  .growth-stats .stat .value.red{color:var(--red)}
 
-  .pill{
-    display: inline-flex; align-items: center; gap: 5px;
-    margin-top: 14px;
-    padding: 4px 10px; border-radius: 999px;
-    font-size: 12px; font-weight: 600; letter-spacing: 0.01em;
-    width: fit-content;
-  }
-  .pill::before{
-    content: ""; width: 6px; height: 6px; border-radius: 50%;
-    background: currentColor;
-  }
-  .pill.normal{ background: var(--green-soft); color: var(--green); }
-  .pill.low{ background: var(--amber-soft); color: var(--amber); }
-  .pill.high{ background: var(--red-soft); color: var(--red); }
-  .pill.idle{ background: var(--bg-soft); color: var(--text-mid); }
-  .pill.on{ background: var(--blue-soft); color: var(--blue); }
-  .pill.mode{ background: var(--violet-soft); color: var(--violet); }
+  .progress-wrap{margin-bottom:22px}
+  .progress-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--text-dim);margin-bottom:8px;font-weight:500}
+  .progress-track{position:relative;height:8px;background:var(--bg-soft);border-radius:999px;overflow:hidden}
+  .progress-band{position:absolute;top:0;bottom:0;background:rgba(2,132,199,.10);border-left:2px dashed var(--blue);border-right:2px dashed var(--blue)}
+  .progress-fill{position:absolute;top:0;left:0;bottom:0;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:999px;width:0%;transition:width .4s ease}
 
-  /* ===== Table ===== */
-  .table-wrap{
-    background: var(--bg-card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    overflow: hidden;
-  }
-  table{ width: 100%; border-collapse: collapse; }
-  thead th{
-    text-align: left; padding: 13px 20px;
-    font-size: 12px; font-weight: 500; color: var(--text-dim);
-    background: var(--bg-soft); letter-spacing: 0.02em;
-    border-bottom: 1px solid var(--line);
-  }
-  tbody td{
-    padding: 14px 20px; font-size: 14px; color: var(--text);
-    border-bottom: 1px solid var(--line);
-  }
-  tbody tr:last-child td{ border-bottom: 0; }
-  tbody tr:hover{ background: #fafbfd; }
-  .td-mono{ font-family: var(--mono); font-size: 13.5px; color: var(--text-mid); }
-  .td-num{ color: var(--text-dim); font-variant-numeric: tabular-nums; }
+  .calendar-wrap{max-width:520px}
+  .calendar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .cal-title{font-size:15px;font-weight:600}
+  .cal-nav{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--bg-card);color:var(--text-mid);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .cal-nav:hover{background:var(--bg-soft);border-color:var(--line-strong)}
+  .cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:8px}
+  .cal-weekdays>div{text-align:center;font-size:11.5px;font-weight:600;color:var(--text-dim);letter-spacing:.03em;text-transform:uppercase}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .cal-cell{aspect-ratio:1;border-radius:6px;background:var(--bg-soft);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:500;color:var(--text-mid);font-variant-numeric:tabular-nums;transition:transform .1s,box-shadow .12s,border-color .12s}
+  .cal-cell.empty{background:transparent;border-color:transparent}
+  .cal-cell.fed{background:var(--green);border-color:var(--green);color:#fff;font-weight:600}
+  .cal-cell.fed:hover{transform:scale(1.08)}
+  .cal-cell.clickable{cursor:pointer}
+  .cal-cell.clickable:not(.fed):hover{border-color:var(--line-strong);box-shadow:0 2px 8px rgba(15,23,42,.08)}
+  .cal-cell.today{border:2px solid var(--amber);color:var(--text);font-weight:600}
+  .cal-cell.future{opacity:.35}
+  .cal-cell.pre-stock{opacity:.25}
 
-  .mode-tag{
-    display: inline-block; padding: 3px 10px;
-    background: var(--violet-soft); color: var(--violet);
-    border-radius: 6px; font-size: 12px; font-weight: 600;
-  }
+  .legend{display:flex;gap:18px;margin-top:14px;font-size:12px;color:var(--text-dim);flex-wrap:wrap}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend .sw{width:10px;height:10px;border-radius:3px;display:inline-block}
 
-  .empty-row td{
-    text-align: center; color: var(--text-dim);
-    padding: 32px 20px; font-size: 14px;
-  }
+  /* ===== Modal ===== */
+  .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;overflow-y:auto}
+  .modal-overlay.active{display:flex}
+  .modal-box{background:var(--bg-card);border-radius:14px;padding:26px 28px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(15,23,42,.25);margin:auto}
+  .modal-box.wide{max-width:720px}
+  .modal-box h3{margin:0 0 4px;font-size:17px;font-weight:600}
+  .modal-box .count{font-size:13px;color:var(--text-dim);margin-bottom:18px}
+  .modal-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;max-height:280px;overflow-y:auto}
+  .modal-list .feed-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg-soft);border-radius:8px;font-size:13.5px}
+  .modal-list .feed-item .time{font-family:var(--mono);font-weight:500}
+  .modal-list .feed-item .mode{font-size:11.5px;padding:2px 8px;background:var(--violet-soft);color:var(--violet);border-radius:4px;font-weight:600}
+  .modal-empty{padding:20px;background:var(--bg-soft);border-radius:8px;text-align:center;color:var(--text-dim);font-size:13.5px;margin-bottom:20px}
+  .modal-close{width:100%;padding:11px;background:var(--text);color:#fff;border:0;border-radius:8px;font-family:var(--sans);font-size:14px;font-weight:500;cursor:pointer}
+  .modal-close:hover{background:#1e293b}
 
-  /* ===== Panel ===== */
-  .panel{
-    background: var(--bg-card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 24px;
-  }
+  /* Wizard form */
+  .wizard-form{margin-bottom:18px}
+  .wizard-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:20px}
+  .wizard-row label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:500;color:var(--text-mid)}
+  .wizard-row input{background:var(--bg-card);border:1px solid var(--line-strong);color:var(--text);font-family:var(--sans);font-size:14px;padding:8px 12px;border-radius:8px}
+  .wizard-row input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(2,132,199,.15)}
+  .wizard-minihead{font-size:12px;font-weight:600;color:var(--text-dim);letter-spacing:.02em;margin-bottom:10px}
+  .wizard-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+  @media (max-width:600px){.wizard-grid{grid-template-columns:repeat(2,1fr)}}
+  .wizard-grid label{display:flex;flex-direction:column;gap:4px;font-size:11.5px;font-weight:500;color:var(--text-mid)}
+  .wizard-grid input{background:var(--bg-card);border:1px solid var(--line-strong);color:var(--text);font-family:var(--mono);font-size:13px;padding:6px 10px;border-radius:6px}
+  .wizard-grid input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(2,132,199,.15)}
+  .wizard-actions{display:flex;gap:10px}
+  .wizard-actions button{flex:1}
+  .wizard-cancel{background:var(--bg-soft);color:var(--text)}
+  .wizard-cancel:hover{background:var(--line)}
 
-  .growth-stats{
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 14px; margin-bottom: 22px;
-  }
-  .growth-stats .stat{
-    background: var(--bg-soft); border-radius: 10px; padding: 16px 18px;
-  }
-  .growth-stats .stat .label{
-    font-size: 12px; color: var(--text-dim); margin-bottom: 6px; font-weight: 500;
-  }
-  .growth-stats .stat .value{
-    font-family: var(--mono); font-size: 26px; font-weight: 600;
-    color: var(--text); letter-spacing: -0.02em;
-  }
-  .growth-stats .stat .value.green{ color: var(--green); }
-  .growth-stats .stat .value.amber{ color: var(--amber); }
-  .growth-stats .stat .value.red{ color: var(--red); }
+  footer{text-align:center;padding:32px 0 8px;color:var(--text-dim);font-size:12.5px;border-top:1px solid var(--line);margin-top:40px}
+  footer strong{display:block;color:var(--text);font-size:13.5px;margin-bottom:6px;font-weight:600}
+  footer span{display:block;margin:4px 0}
 
-  .progress-wrap{ margin-bottom: 22px; }
-  .progress-labels{
-    display: flex; justify-content: space-between;
-    font-size: 12px; color: var(--text-dim); margin-bottom: 8px; font-weight: 500;
-  }
-  .progress-track{
-    position: relative; height: 8px;
-    background: var(--bg-soft); border-radius: 999px; overflow: hidden;
-  }
-  .progress-band{
-    position: absolute; top: 0; bottom: 0;
-    background: rgba(2,132,199,0.10);
-    border-left: 2px dashed var(--blue);
-    border-right: 2px dashed var(--blue);
-  }
-  .progress-fill{
-    position: absolute; top: 0; left: 0; bottom: 0;
-    background: linear-gradient(90deg, var(--green), var(--blue));
-    border-radius: 999px; width: 0%; transition: width 0.4s ease;
-  }
-
-  .settings-row{
-    display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 24px;
-  }
-  .settings-row label{
-    display: flex; flex-direction: column; gap: 6px;
-    font-size: 12px; font-weight: 500; color: var(--text-mid);
-  }
-  .settings-row input{
-    background: var(--bg-card);
-    border: 1px solid var(--line-strong);
-    color: var(--text); font-family: var(--sans);
-    font-size: 14px; padding: 8px 12px; border-radius: 8px; width: 150px;
-    transition: border-color 0.15s, box-shadow 0.15s;
-  }
-  .settings-row input:focus{
-    outline: none; border-color: var(--blue);
-    box-shadow: 0 0 0 3px rgba(2,132,199,0.15);
-  }
-
-  /* ===== Calendar ===== */
-  .calendar-wrap{
-    max-width: 520px;
-  }
-  .calendar-header{
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 14px;
-  }
-  .cal-title{
-    font-size: 15px; font-weight: 600; color: var(--text);
-  }
-  .cal-nav{
-    width: 32px; height: 32px; border-radius: 8px;
-    border: 1px solid var(--line);
-    background: var(--bg-card); color: var(--text-mid);
-    font-size: 18px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.12s, border-color 0.12s;
-  }
-  .cal-nav:hover{
-    background: var(--bg-soft);
-    border-color: var(--line-strong);
-  }
-  .cal-weekdays{
-    display: grid; grid-template-columns: repeat(7, 1fr);
-    gap: 6px; margin-bottom: 8px;
-  }
-  .cal-weekdays > div{
-    text-align: center; font-size: 11.5px; font-weight: 600;
-    color: var(--text-dim); letter-spacing: 0.03em; text-transform: uppercase;
-  }
-  .cal-grid{
-    display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
-  }
-  .cal-cell{
-    aspect-ratio: 1; border-radius: 6px;
-    background: var(--bg-soft); border: 1px solid var(--line);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12.5px; font-weight: 500; color: var(--text-mid);
-    font-variant-numeric: tabular-nums;
-    transition: transform 0.1s ease, box-shadow 0.12s ease, border-color 0.12s ease;
-  }
-  .cal-cell.empty{ background: transparent; border-color: transparent; }
-  .cal-cell.fed{
-    background: var(--green); border-color: var(--green);
-    color: #fff; font-weight: 600;
-  }
-  .cal-cell.fed:hover{ transform: scale(1.08); }
-  .cal-cell.clickable{ cursor: pointer; }
-  .cal-cell.clickable:not(.fed):hover{
-    border-color: var(--line-strong);
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
-  }
-  .cal-cell.today{
-    border: 2px solid var(--amber);
-    color: var(--text); font-weight: 600;
-  }
-  .cal-cell.future{ opacity: 0.35; }
-  .cal-cell.pre-stock{ opacity: 0.25; }
-
-  .legend{
-    display: flex; gap: 18px; margin-top: 14px;
-    font-size: 12px; color: var(--text-dim);
-    flex-wrap: wrap;
-  }
-  .legend span{ display: inline-flex; align-items: center; gap: 6px; }
-  .legend .sw{
-    width: 10px; height: 10px; border-radius: 3px; display: inline-block;
-  }
-
-  /* ===== Feed modal ===== */
-  .modal-overlay{
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.45);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    padding: 20px;
-    animation: fadeIn 0.15s ease;
-  }
-  .modal-overlay.active{ display: flex; }
-  @keyframes fadeIn{
-    from{ opacity: 0; }
-    to{ opacity: 1; }
-  }
-  .modal-box{
-    background: var(--bg-card);
-    border-radius: 14px;
-    padding: 26px 28px;
-    max-width: 420px;
-    width: 100%;
-    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
-    animation: popIn 0.18s ease;
-  }
-  @keyframes popIn{
-    from{ transform: scale(0.95); opacity: 0; }
-    to{ transform: scale(1); opacity: 1; }
-  }
-  .modal-box h3{
-    margin: 0 0 4px;
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .modal-box .count{
-    font-size: 13px;
-    color: var(--text-dim);
-    margin-bottom: 18px;
-  }
-  .modal-list{
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 20px;
-    max-height: 280px;
-    overflow-y: auto;
-  }
-  .modal-list .feed-item{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 14px;
-    background: var(--bg-soft);
-    border-radius: 8px;
-    font-size: 13.5px;
-  }
-  .modal-list .feed-item .time{
-    font-family: var(--mono);
-    font-weight: 500;
-    color: var(--text);
-  }
-  .modal-list .feed-item .mode{
-    font-size: 11.5px;
-    padding: 2px 8px;
-    background: var(--violet-soft);
-    color: var(--violet);
-    border-radius: 4px;
-    font-weight: 600;
-  }
-  .modal-empty{
-    padding: 20px;
-    background: var(--bg-soft);
-    border-radius: 8px;
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 13.5px;
-    margin-bottom: 20px;
-  }
-  .modal-close{
-    width: 100%;
-    padding: 11px;
-    background: var(--text);
-    color: #fff;
-    border: 0;
-    border-radius: 8px;
-    font-family: var(--sans);
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.12s;
-  }
-  .modal-close:hover{ background: #1e293b; }
-
-  footer{
-    text-align: center; padding: 32px 0 8px;
-    color: var(--text-dim); font-size: 12.5px;
-    border-top: 1px solid var(--line); margin-top: 40px;
-  }
-  footer strong{
-    display: block; color: var(--text); font-size: 13.5px;
-    margin-bottom: 6px; font-weight: 600;
-  }
-  footer span{ display: block; margin: 4px 0; }
-
-  @media (max-width: 640px){
-    .page{ padding: 20px 18px 36px; }
-    .card .value{ font-size: 28px; }
-    .growth-stats{ grid-template-columns: 1fr; }
+  @media (max-width:640px){
+    .page{padding:20px 18px 36px}
+    .card .value{font-size:28px}
+    .growth-stats{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -449,7 +181,14 @@
 <body>
 <div class="page">
 
-  <!-- ===== Header ===== -->
+  <!-- Harvest banner -->
+  <div class="harvest-banner" id="harvestBanner" style="display:none;">
+    <span class="icon">🌾</span>
+    <span class="msg" id="harvestBannerMsg">Fish are ready to harvest</span>
+    <button class="btn-harvest-small" id="harvestNowBtn">Harvest now</button>
+  </div>
+
+  <!-- Header -->
   <header class="topbar">
     <div class="brand">
       <div class="logo">🌿</div>
@@ -458,43 +197,41 @@
         <div class="sub">Real-time water quality &amp; feeding dashboard</div>
       </div>
     </div>
-    <div class="live-pill">
-      <span class="live-dot" id="liveDot"></span>
-      <span id="lastUpdate">Connecting…</span>
+    <div class="header-actions">
+      <button class="btn-text" id="editScheduleBtn">Edit schedule</button>
+      <div class="live-pill">
+        <span class="live-dot" id="liveDot"></span>
+        <span id="lastUpdate">Connecting…</span>
+      </div>
     </div>
   </header>
 
-  <!-- ===== Live readings ===== -->
+  <!-- Live readings -->
   <section>
     <div class="section-head">
       <h2>Live Readings</h2>
       <p>Sensor data streamed from the ESP32 every few seconds.</p>
     </div>
-
     <div class="sensor-grid">
       <div class="card">
         <div class="label"><span class="ico">🌡️</span> Temperature</div>
         <div id="temp" class="value">--<span class="unit">°C</span></div>
         <div id="tempStatus" class="pill idle">Waiting…</div>
       </div>
-
       <div class="card">
         <div class="label"><span class="ico">💧</span> pH Level</div>
         <div id="ph" class="value">--</div>
         <div id="phStatus" class="pill idle">Waiting…</div>
       </div>
-
       <div class="card">
         <div class="label"><span class="ico">🫧</span> Dissolved Oxygen</div>
         <div id="do" class="value">--<span class="unit">mg/L</span></div>
       </div>
-
       <div class="card">
         <div class="label"><span class="ico">💨</span> Aerator</div>
         <div id="aerator" class="value">--</div>
         <div id="aeratorState" class="pill idle">Standby</div>
       </div>
-
       <div class="card">
         <div class="label"><span class="ico">🐟</span> Next Feeding</div>
         <div id="countdown" class="value small">--:--:--</div>
@@ -503,22 +240,15 @@
     </div>
   </section>
 
-  <!-- ===== Feeding history ===== -->
+  <!-- Feeding history -->
   <section>
     <div class="section-head">
       <h2>Feeding History</h2>
       <p>Last 15 logged feeder activations.</p>
     </div>
-
     <div class="table-wrap">
       <table>
-        <thead>
-          <tr>
-            <th style="width:60px;">#</th>
-            <th>Date &amp; Time</th>
-            <th style="width:180px;">Mode</th>
-          </tr>
-        </thead>
+        <thead><tr><th style="width:60px;">#</th><th>Date &amp; Time</th><th style="width:180px;">Mode</th></tr></thead>
         <tbody id="feedHistory">
           <tr class="empty-row"><td colspan="3">Loading…</td></tr>
         </tbody>
@@ -526,13 +256,12 @@
     </div>
   </section>
 
-  <!-- ===== Growth calendar ===== -->
+  <!-- Growth calendar -->
   <section>
     <div class="section-head">
       <h2>Growth &amp; Feeding Calendar</h2>
       <p>Tracks days since stocking and shows which days the fish were fed. Click a day to see details.</p>
     </div>
-
     <div class="panel">
       <div class="growth-stats">
         <div class="stat">
@@ -552,7 +281,7 @@
       <div class="progress-wrap">
         <div class="progress-labels">
           <span>Week 1</span>
-          <span id="progressMaxLabel">Week 20</span>
+          <span id="progressMaxLabel">Week 12</span>
         </div>
         <div class="progress-track">
           <div class="progress-band" id="progressBand"></div>
@@ -560,31 +289,17 @@
         </div>
       </div>
 
-      <div class="settings-row">
-        <label>Stocking date
-          <input type="date" id="stockingDate">
-        </label>
-        <label>Harvest window — from (week)
-          <input type="number" id="harvestMin" min="1" max="52" value="13">
-        </label>
-        <label>Harvest window — to (week)
-          <input type="number" id="harvestMax" min="1" max="52" value="20">
-        </label>
-      </div>
-
       <div class="calendar-wrap">
         <div class="calendar-header">
-          <button class="cal-nav" id="prevMonth" aria-label="Previous month">‹</button>
-          <div class="cal-title" id="calTitle">September 2026</div>
-          <button class="cal-nav" id="nextMonth" aria-label="Next month">›</button>
+          <button class="cal-nav" id="prevMonth">‹</button>
+          <div class="cal-title" id="calTitle">—</div>
+          <button class="cal-nav" id="nextMonth">›</button>
         </div>
-
         <div class="cal-weekdays">
           <div>Su</div><div>Mo</div><div>Tu</div><div>We</div>
           <div>Th</div><div>Fr</div><div>Sa</div>
         </div>
         <div class="cal-grid" id="calGrid"></div>
-
         <div class="legend">
           <span><span class="sw" style="background:var(--green)"></span>Fed</span>
           <span><span class="sw" style="background:var(--bg-soft);border:1px solid var(--line)"></span>No feed logged</span>
@@ -600,10 +315,9 @@
     <span>ESP32 · Node.js · MongoDB · IoT monitoring platform</span>
     <span>© 2026</span>
   </footer>
-
 </div>
 
-<!-- ===== Feed detail modal ===== -->
+<!-- Feed detail modal -->
 <div class="modal-overlay" id="feedModal">
   <div class="modal-box">
     <h3 id="modalDate">—</h3>
@@ -613,13 +327,74 @@
   </div>
 </div>
 
+<!-- Setup wizard modal -->
+<div class="modal-overlay" id="setupWizard">
+  <div class="modal-box wide">
+    <h3 id="wizardTitle">Set up feeding schedule</h3>
+    <div class="count" id="wizardSubtitle">Enter the stocking date, harvest window, and grams per feed for weeks 1–12.</div>
+
+    <div class="wizard-form">
+      <div class="wizard-row">
+        <label>Stocking date
+          <input type="date" id="wizardStockingDate">
+        </label>
+        <label>Harvest from (week)
+          <input type="number" id="wizardHarvestStart" min="1" max="52" value="8">
+        </label>
+        <label>Harvest to (week)
+          <input type="number" id="wizardHarvestEnd" min="1" max="52" value="12">
+        </label>
+        <label>Servo rate (g / second)
+          <input type="number" id="wizardServoRate" min="0.1" max="20" step="0.1" value="2.0">
+        </label>
+      </div>
+
+      <div class="wizard-minihead">Feeding portions (grams per feed)</div>
+      <div class="wizard-grid" id="wizardPortions"></div>
+    </div>
+
+    <div class="wizard-actions">
+      <button class="modal-close wizard-cancel" id="wizardCancelBtn">Cancel</button>
+      <button class="modal-close" id="wizardSaveBtn">Save schedule</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ===== Backend URL =====
 const API_BASE = "https://aquaponics-backend-sgr7.onrender.com";
 
 let nextFeedMs = null;
 let lastReceivedSeconds = null;
-let feedLogs = [];   // full feed objects: { feed_time, mode }
+let feedLogs = [];
+let appConfig = {
+  portions: [],
+  stockingDate: "",
+  harvestStart: 8,
+  harvestEnd: 12,
+  servoRate: 2.0,
+  cycleNumber: 1
+};
+let hasSavedConfig = false;
+
+/* =====================================================
+   HELPERS
+   ===================================================== */
+function todayISO() {
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+
+function getDaysSinceStocking() {
+  if (!appConfig.stockingDate) return -1;
+  const start = new Date(appConfig.stockingDate + "T00:00:00");
+  return Math.floor((new Date() - start) / 86400000);
+}
+
+function getCurrentWeek() {
+  const days = getDaysSinceStocking();
+  if (days < 0) return 0;
+  return Math.floor(days / 7) + 1;
+}
 
 function getStatusClass(status) {
   const s = (status || "").toUpperCase();
@@ -628,18 +403,206 @@ function getStatusClass(status) {
   if (s.includes("NORMAL")) return "pill normal";
   return "pill idle";
 }
-
 function prettyStatus(status) {
   const s = (status || "").toUpperCase();
-  if (s === "L") return "Too low";
-  if (s === "H") return "Too high";
+  if (s === "L" || s === "LOW") return "Too low";
+  if (s === "H" || s === "HIGH") return "Too high";
   if (s === "N" || s === "NORMAL") return "Normal";
-  if (s === "LOW") return "Too low";
-  if (s === "HIGH") return "Too high";
   return status || "--";
 }
 
-// ===== Countdown =====
+/* =====================================================
+   CONFIG — fetch / save / wizard
+   ===================================================== */
+function loadConfig() {
+  const x = new XMLHttpRequest();
+  x.onload = function() {
+    try {
+      const data = JSON.parse(this.responseText);
+      appConfig = {
+        portions: data.portions || [],
+        stockingDate: data.stockingDate || "",
+        harvestStart: data.harvestStart || 8,
+        harvestEnd: data.harvestEnd || 12,
+        servoRate: data.servoRate || 2.0,
+        cycleNumber: data.cycleNumber || 1
+      };
+      hasSavedConfig = appConfig.portions.length === 12 && appConfig.stockingDate;
+
+      if (!hasSavedConfig) {
+        // First time — show wizard
+        showWizard(false);
+      } else {
+        hideWizard();
+      }
+      refreshDerivedUI();
+    } catch(e) { console.error(e); }
+  };
+  x.open("GET", API_BASE + "/api/get_config?t=" + Date.now(), true);
+  x.send();
+}
+
+function showWizard(isEditing) {
+  const wiz = document.getElementById("setupWizard");
+  document.getElementById("wizardTitle").innerText = isEditing ? "Edit feeding schedule" : "Set up feeding schedule";
+  document.getElementById("wizardSubtitle").innerText = isEditing
+    ? "Update the stocking date, harvest window, or weekly portions. Changes apply immediately."
+    : "Enter the stocking date, harvest window, and grams per feed for weeks 1–12.";
+
+  document.getElementById("wizardStockingDate").value = appConfig.stockingDate || todayISO();
+  document.getElementById("wizardHarvestStart").value = appConfig.harvestStart || 8;
+  document.getElementById("wizardHarvestEnd").value   = appConfig.harvestEnd   || 12;
+  document.getElementById("wizardServoRate").value    = appConfig.servoRate    || 2.0;
+
+  const grid = document.getElementById("wizardPortions");
+  grid.innerHTML = "";
+  for (let i = 1; i <= 12; i++) {
+    const val = (appConfig.portions && appConfig.portions[i-1]) || "";
+    const label = document.createElement("label");
+    label.innerHTML = `Week ${i}
+      <input type="number" min="0" step="0.1" data-week="${i}" value="${val}" placeholder="grams">`;
+    grid.appendChild(label);
+  }
+
+  document.getElementById("wizardCancelBtn").style.display = hasSavedConfig ? "block" : "none";
+  wiz.classList.add("active");
+}
+
+function hideWizard() {
+  document.getElementById("setupWizard").classList.remove("active");
+}
+
+function saveWizard() {
+  const stockingDate = document.getElementById("wizardStockingDate").value;
+  const harvestStart = parseInt(document.getElementById("wizardHarvestStart").value);
+  const harvestEnd   = parseInt(document.getElementById("wizardHarvestEnd").value);
+  const servoRate    = parseFloat(document.getElementById("wizardServoRate").value) || 2.0;
+
+  const portions = [];
+  document.querySelectorAll("#wizardPortions input").forEach(inp => {
+    portions.push(parseFloat(inp.value) || 0);
+  });
+
+  // Basic validation
+  if (!stockingDate) { alert("Please enter a stocking date."); return; }
+  if (harvestStart >= harvestEnd) { alert("Harvest start week must be less than end week."); return; }
+  if (portions.every(p => p <= 0)) { alert("Please enter at least one portion value."); return; }
+
+  const url = API_BASE + "/api/set_config"
+    + "?portions=" + portions.join(",")
+    + "&stockingDate=" + encodeURIComponent(stockingDate)
+    + "&harvestStart=" + harvestStart
+    + "&harvestEnd=" + harvestEnd
+    + "&servoRate=" + servoRate;
+
+  const x = new XMLHttpRequest();
+  x.onload = function() {
+    if (this.status === 200) {
+      appConfig = { portions, stockingDate, harvestStart, harvestEnd, servoRate, cycleNumber: appConfig.cycleNumber };
+      hasSavedConfig = true;
+      hideWizard();
+      refreshDerivedUI();
+    } else {
+      alert("Save failed: " + this.responseText);
+    }
+  };
+  x.onerror = function() { alert("Network error while saving."); };
+  x.open("GET", url, true);
+  x.send();
+}
+
+function performHarvest() {
+  if (!confirm("Confirm harvest? This will end the current cycle and open a new setup wizard for the next batch.")) return;
+
+  const x = new XMLHttpRequest();
+  x.onload = function() {
+    if (this.status === 200) {
+      appConfig.portions = [];
+      appConfig.stockingDate = "";
+      hasSavedConfig = false;
+      document.getElementById("harvestBanner").style.display = "none";
+      showWizard(false);
+    } else {
+      alert("Harvest failed: " + this.responseText);
+    }
+  };
+  x.onerror = function() { alert("Network error."); };
+  x.open("GET", API_BASE + "/api/harvest", true);
+  x.send();
+}
+
+/* =====================================================
+   DERIVED UI — growth stats, progress bar, banner
+   ===================================================== */
+function refreshDerivedUI() {
+  renderGrowthStats();
+  renderCalendar();
+  checkHarvestBanner();
+}
+
+function renderGrowthStats() {
+  const days = getDaysSinceStocking();
+  const week = days >= 0 ? Math.floor(days / 7) + 1 : 0;
+  const harvestMin = appConfig.harvestStart || 8;
+  const harvestMax = appConfig.harvestEnd   || 12;
+
+  document.getElementById("gDay").innerText = days >= 0 ? days : "--";
+  document.getElementById("gWeek").innerText = week > 0 ? week : "--";
+
+  const daysToHarvest = (harvestMin * 7) - days;
+  const gEl = document.getElementById("gToHarvest");
+  gEl.style.color = "";
+
+  if (days < 0) {
+    gEl.innerText = "--";
+    gEl.className = "value";
+  } else if (daysToHarvest > 0) {
+    const weeks = Math.ceil(daysToHarvest / 7);
+    gEl.innerText = weeks + " wk";
+    gEl.title = daysToHarvest + " days";
+    gEl.className = "value green";
+  } else if (week <= harvestMax) {
+    gEl.innerText = "In window";
+    gEl.className = "value amber";
+  } else {
+    gEl.innerText = "Past window";
+    gEl.className = "value red";
+  }
+
+  const totalWeeks = Math.max(harvestMax, 1);
+  const pct = Math.min(100, Math.max(0, (week / totalWeeks) * 100));
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressMaxLabel").innerText = "Week " + totalWeeks;
+
+  const band = document.getElementById("progressBand");
+  const bLeft = Math.min(100, (harvestMin / totalWeeks) * 100);
+  const bRight = Math.min(100, (harvestMax / totalWeeks) * 100);
+  band.style.left = bLeft + "%";
+  band.style.width = Math.max(0, bRight - bLeft) + "%";
+}
+
+function checkHarvestBanner() {
+  const banner = document.getElementById("harvestBanner");
+  const msg = document.getElementById("harvestBannerMsg");
+  if (!hasSavedConfig) { banner.style.display = "none"; return; }
+
+  const week = getCurrentWeek();
+  const start = appConfig.harvestStart || 8;
+  const end = appConfig.harvestEnd || 12;
+
+  if (week < start) { banner.style.display = "none"; return; }
+
+  banner.style.display = "flex";
+  if (week <= end) {
+    msg.innerText = `Fish are ready to harvest — week ${week} of the harvest window (${start}–${end}).`;
+  } else {
+    msg.innerText = `Harvest window passed — fish are overdue. Current week: ${week}, window ended at week ${end}.`;
+  }
+}
+
+/* =====================================================
+   LIVE SENSOR POLL
+   ===================================================== */
 function startCountdown() {
   setInterval(() => {
     if (nextFeedMs === null) return;
@@ -653,13 +616,11 @@ function startCountdown() {
   }, 1000);
 }
 
-// ===== Live sensor poll =====
 function loadDoc() {
-  const xhttp = new XMLHttpRequest();
-  xhttp.onload = function() {
+  const x = new XMLHttpRequest();
+  x.onload = function() {
     try {
       const data = JSON.parse(this.responseText);
-
       const stamp = new Date().toLocaleTimeString("en-PH", { hour12: true });
       document.getElementById("lastUpdate").innerText = "Live · " + stamp;
       document.getElementById("lastUpdateFooter").innerText = "Last update: " + stamp;
@@ -669,13 +630,13 @@ function loadDoc() {
       document.getElementById("ph").innerText   = data.ph ?? "--";
       document.getElementById("do").innerHTML   = (data.do ?? "--") + "<span class='unit'>mg/L</span>";
 
-      let tempEl = document.getElementById("tempStatus");
-      tempEl.innerText = prettyStatus(data.tempStatus);
-      tempEl.className = getStatusClass(data.tempStatus);
+      let tEl = document.getElementById("tempStatus");
+      tEl.innerText = prettyStatus(data.tempStatus);
+      tEl.className = getStatusClass(data.tempStatus);
 
-      let phEl = document.getElementById("phStatus");
-      phEl.innerText = prettyStatus(data.phStatus);
-      phEl.className = getStatusClass(data.phStatus);
+      let pEl = document.getElementById("phStatus");
+      pEl.innerText = prettyStatus(data.phStatus);
+      pEl.className = getStatusClass(data.phStatus);
 
       let doValue = parseFloat(data.do);
       const aer = (data.aerator_status || "").toUpperCase();
@@ -712,22 +673,23 @@ function loadDoc() {
       document.getElementById("liveDot").classList.remove("live");
     }
   };
-  xhttp.onerror = function() {
+  x.onerror = function() {
     document.getElementById("liveDot").classList.remove("live");
     document.getElementById("lastUpdate").innerText = "Connection error";
   };
-  xhttp.open("GET", API_BASE + "/api/r_sensor?t=" + new Date().getTime(), true);
-  xhttp.send();
+  x.open("GET", API_BASE + "/api/r_sensor?t=" + Date.now(), true);
+  x.send();
 }
 
-// ===== Feed history =====
+/* =====================================================
+   FEED HISTORY
+   ===================================================== */
 function loadFeedHistory() {
-  const xhttp = new XMLHttpRequest();
-  xhttp.onload = function() {
+  const x = new XMLHttpRequest();
+  x.onload = function() {
     try {
       const data = JSON.parse(this.responseText);
       const tbody = document.getElementById("feedHistory");
-
       feedLogs = data;
       renderCalendar();
 
@@ -751,88 +713,15 @@ function loadFeedHistory() {
         </tr>`;
       });
       tbody.innerHTML = html;
-    } catch (e) { console.log(e); }
+    } catch(e) { console.log(e); }
   };
-  xhttp.open("GET", API_BASE + "/api/r_feed?t=" + new Date().getTime(), true);
-  xhttp.send();
+  x.open("GET", API_BASE + "/api/r_feed?t=" + Date.now(), true);
+  x.send();
 }
 
-/* ===== Growth calendar ===== */
-const DAY_MS = 86400000;
-
-function todayISO() {
-  const d = new Date();
-  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
-}
-
-function loadGrowthSettings() {
-  const stockingInput = document.getElementById("stockingDate");
-  const minInput = document.getElementById("harvestMin");
-  const maxInput = document.getElementById("harvestMax");
-
-  stockingInput.value = localStorage.getItem("aqua_stockingDate") || todayISO();
-  minInput.value = localStorage.getItem("aqua_harvestMin") || 13;
-  maxInput.value = localStorage.getItem("aqua_harvestMax") || 20;
-
-  [stockingInput, minInput, maxInput].forEach(el => {
-    el.addEventListener("change", () => {
-      localStorage.setItem("aqua_stockingDate", stockingInput.value);
-      localStorage.setItem("aqua_harvestMin", minInput.value);
-      localStorage.setItem("aqua_harvestMax", maxInput.value);
-      renderGrowthStats();
-      renderCalendar();
-    });
-  });
-}
-
-function getDaysSinceStocking() {
-  const v = document.getElementById("stockingDate").value;
-  if (!v) return 0;
-  const start = new Date(v + "T00:00:00");
-  return Math.floor((new Date() - start) / DAY_MS);
-}
-
-function renderGrowthStats() {
-  const days = getDaysSinceStocking();
-  const week = days >= 0 ? Math.floor(days / 7) + 1 : 0;
-  const harvestMin = parseInt(document.getElementById("harvestMin").value) || 13;
-  const harvestMax = parseInt(document.getElementById("harvestMax").value) || 20;
-
-  document.getElementById("gDay").innerText = days >= 0 ? days : "--";
-  document.getElementById("gWeek").innerText = week > 0 ? week : "--";
-
-  const daysToHarvest = (harvestMin * 7) - days;
-  const gEl = document.getElementById("gToHarvest");
-
-  if (days < 0) {
-    gEl.innerText = "--";
-    gEl.className = "value";
-  } else if (daysToHarvest > 0) {
-    const weeks = Math.ceil(daysToHarvest / 7);
-    gEl.innerText = weeks + " wk";
-    gEl.title = daysToHarvest + " days";
-    gEl.className = "value green";
-  } else if (week <= harvestMax) {
-    gEl.innerText = "In window";
-    gEl.className = "value amber";
-  } else {
-    gEl.innerText = "Past window";
-    gEl.className = "value red";
-  }
-
-  const totalWeeks = Math.max(harvestMax, 1);
-  const pct = Math.min(100, Math.max(0, (week / totalWeeks) * 100));
-  document.getElementById("progressFill").style.width = pct + "%";
-  document.getElementById("progressMaxLabel").innerText = "Week " + totalWeeks;
-
-  const band = document.getElementById("progressBand");
-  const bLeft = Math.min(100, (harvestMin / totalWeeks) * 100);
-  const bRight = Math.min(100, (harvestMax / totalWeeks) * 100);
-  band.style.left = bLeft + "%";
-  band.style.width = Math.max(0, bRight - bLeft) + "%";
-}
-
-/* ===== Monthly calendar ===== */
+/* =====================================================
+   CALENDAR
+   ===================================================== */
 let calendarCursor = new Date();
 
 function setupCalendarNav() {
@@ -852,20 +741,17 @@ function renderCalendar() {
   if (!grid) return;
   grid.innerHTML = "";
 
-  const year  = calendarCursor.getFullYear();
+  const year = calendarCursor.getFullYear();
   const month = calendarCursor.getMonth();
 
-  title.innerText = calendarCursor.toLocaleString("en-PH", {
-    month: "long", year: "numeric"
-  });
+  title.innerText = calendarCursor.toLocaleString("en-PH", { month: "long", year: "numeric" });
 
-  const stockingVal = document.getElementById("stockingDate").value;
+  const stockingVal = appConfig.stockingDate;
   const stocking = stockingVal ? new Date(stockingVal + "T00:00:00") : null;
 
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  // Group feeds by calendar day (converted to Philippine time).
   const feedsByDay = {};
   feedLogs.forEach(row => {
     const d = new Date(row.feed_time + " UTC");
@@ -874,8 +760,7 @@ function renderCalendar() {
     if (!feedsByDay[key]) feedsByDay[key] = [];
     feedsByDay[key].push({
       time: pht.toLocaleTimeString("en-PH", {
-        timeZone: "Asia/Manila",
-        hour: "2-digit", minute: "2-digit", hour12: true
+        timeZone: "Asia/Manila", hour: "2-digit", minute: "2-digit", hour12: true
       }),
       mode: row.mode
     });
@@ -886,9 +771,9 @@ function renderCalendar() {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
   for (let i = 0; i < startWeekday; i++) {
-    const cell = document.createElement("div");
-    cell.className = "cal-cell empty";
-    grid.appendChild(cell);
+    const c = document.createElement("div");
+    c.className = "cal-cell empty";
+    grid.appendChild(c);
   }
 
   for (let day = 1; day <= daysInMonth; day++) {
@@ -899,24 +784,16 @@ function renderCalendar() {
     cell.className = "cal-cell";
     cell.innerText = day;
 
-    if (cellDate.getTime() === today.getTime()) {
-      cell.classList.add("today");
-    } else if (cellDate > today) {
-      cell.classList.add("future");
-    } else if (stocking && cellDate < stocking) {
-      cell.classList.add("pre-stock");
-    }
+    if (cellDate.getTime() === today.getTime()) cell.classList.add("today");
+    else if (cellDate > today) cell.classList.add("future");
+    else if (stocking && cellDate < stocking) cell.classList.add("pre-stock");
 
     const dayFeeds = feedsByDay[key] || [];
-    if (dayFeeds.length > 0) {
-      cell.classList.add("fed");
-    }
+    if (dayFeeds.length > 0) cell.classList.add("fed");
 
     const isFuture = cellDate > today;
     const isPreStock = stocking && cellDate < stocking;
 
-    // Past and today's cells are clickable.
-    // Future days and pre-stocking days are not.
     if (!isFuture && !isPreStock) {
       cell.classList.add("clickable");
       cell.addEventListener("click", () => openFeedModal(dayFeeds, year, month, day));
@@ -926,14 +803,11 @@ function renderCalendar() {
   }
 }
 
-/* ===== Feed modal ===== */
 function openFeedModal(feeds, y, m, d) {
   const dateStr = new Date(y, m, d).toLocaleDateString("en-US", {
     weekday: "long", year: "numeric", month: "long", day: "numeric"
   });
-
   document.getElementById("modalDate").innerText = dateStr;
-
   const list = document.getElementById("modalList");
   list.innerHTML = "";
 
@@ -943,7 +817,6 @@ function openFeedModal(feeds, y, m, d) {
   } else {
     document.getElementById("modalCount").innerText =
       feeds.length + (feeds.length === 1 ? " feed logged" : " feeds logged");
-
     feeds.forEach(f => {
       const row = document.createElement("div");
       row.className = "feed-item";
@@ -951,7 +824,6 @@ function openFeedModal(feeds, y, m, d) {
       list.appendChild(row);
     });
   }
-
   document.getElementById("feedModal").classList.add("active");
 }
 
@@ -959,32 +831,32 @@ function closeFeedModal() {
   document.getElementById("feedModal").classList.remove("active");
 }
 
+/* =====================================================
+   BOOT
+   ===================================================== */
 document.getElementById("modalCloseBtn").addEventListener("click", closeFeedModal);
-
 document.getElementById("feedModal").addEventListener("click", (e) => {
   if (e.target.id === "feedModal") closeFeedModal();
 });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeFeedModal(); });
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeFeedModal();
+document.getElementById("wizardSaveBtn").addEventListener("click", saveWizard);
+document.getElementById("wizardCancelBtn").addEventListener("click", () => {
+  if (hasSavedConfig) hideWizard();
 });
+document.getElementById("editScheduleBtn").addEventListener("click", () => showWizard(true));
+document.getElementById("harvestNowBtn").addEventListener("click", performHarvest);
 
-function initGrowthCalendar() {
-  loadGrowthSettings();
-  renderGrowthStats();
-  setupCalendarNav();
-  renderCalendar();
-  setInterval(renderGrowthStats, 60000);
-}
-
-/* ===== Boot ===== */
+loadConfig();
 loadDoc();
 startCountdown();
 loadFeedHistory();
-initGrowthCalendar();
+setupCalendarNav();
+renderCalendar();
 
 setInterval(loadDoc, 1000);
 setInterval(loadFeedHistory, 10000);
+setInterval(checkHarvestBanner, 60000);
 </script>
 
 </body>
