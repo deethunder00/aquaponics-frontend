@@ -25,15 +25,11 @@
   body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;-webkit-font-smoothing:antialiased}
   .page{max-width:1280px;margin:0 auto;padding:28px 32px 48px}
 
-  /* ===== Harvest banner ===== */
   .harvest-banner{
     display:flex; align-items:center; gap:14px;
     background:linear-gradient(90deg,#fef2f2,#fef2f2);
-    border:1px solid #fecaca;
-    border-left:4px solid var(--red);
-    padding:14px 20px;
-    border-radius:10px;
-    margin-bottom:22px;
+    border:1px solid #fecaca; border-left:4px solid var(--red);
+    padding:14px 20px; border-radius:10px; margin-bottom:22px;
   }
   .harvest-banner .icon{font-size:22px}
   .harvest-banner .msg{flex:1;font-size:14px;font-weight:500;color:#7f1d1d}
@@ -43,7 +39,6 @@
   }
   .harvest-banner .btn-harvest-small:hover{background:#b91c1c}
 
-  /* ===== Header ===== */
   .topbar{display:flex;align-items:center;justify-content:space-between;padding-bottom:22px;margin-bottom:28px;border-bottom:1px solid var(--line);flex-wrap:wrap;gap:14px}
   .brand{display:flex;align-items:center;gap:12px}
   .brand .logo{width:38px;height:38px;background:linear-gradient(135deg,#059669,#0284c7);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
@@ -134,7 +129,6 @@
   .legend span{display:inline-flex;align-items:center;gap:6px}
   .legend .sw{width:10px;height:10px;border-radius:3px;display:inline-block}
 
-  /* ===== Modal ===== */
   .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;overflow-y:auto}
   .modal-overlay.active{display:flex}
   .modal-box{background:var(--bg-card);border-radius:14px;padding:26px 28px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(15,23,42,.25);margin:auto}
@@ -149,7 +143,6 @@
   .modal-close{width:100%;padding:11px;background:var(--text);color:#fff;border:0;border-radius:8px;font-family:var(--sans);font-size:14px;font-weight:500;cursor:pointer}
   .modal-close:hover{background:#1e293b}
 
-  /* Wizard form */
   .wizard-form{margin-bottom:18px}
   .wizard-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:20px}
   .wizard-row label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:500;color:var(--text-mid);min-width:0}
@@ -180,15 +173,12 @@
 
 <body>
 <div class="page">
-
-  <!-- Harvest banner -->
   <div class="harvest-banner" id="harvestBanner" style="display:none;">
     <span class="icon">🌾</span>
     <span class="msg" id="harvestBannerMsg">Fish are ready to harvest</span>
     <button class="btn-harvest-small" id="harvestNowBtn">Harvest now</button>
   </div>
 
-  <!-- Header -->
   <header class="topbar">
     <div class="brand">
       <div class="logo">🌿</div>
@@ -206,105 +196,44 @@
     </div>
   </header>
 
-  <!-- Live readings -->
   <section>
-    <div class="section-head">
-      <h2>Live Readings</h2>
-      <p>Sensor data streamed from the ESP32 every few seconds.</p>
-    </div>
+    <div class="section-head"><h2>Live Readings</h2><p>Sensor data streamed from the ESP32 every few seconds.</p></div>
     <div class="sensor-grid">
-      <div class="card">
-        <div class="label"><span class="ico">🌡️</span> Temperature</div>
-        <div id="temp" class="value">--<span class="unit">°C</span></div>
-        <div id="tempStatus" class="pill idle">Waiting…</div>
-      </div>
-      <div class="card">
-        <div class="label"><span class="ico">💧</span> pH Level</div>
-        <div id="ph" class="value">--</div>
-        <div id="phStatus" class="pill idle">Waiting…</div>
-      </div>
-      <div class="card">
-        <div class="label"><span class="ico">🫧</span> Dissolved Oxygen</div>
-        <div id="do" class="value">--<span class="unit">mg/L</span></div>
-      </div>
-      <div class="card">
-        <div class="label"><span class="ico">💨</span> Aerator</div>
-        <div id="aerator" class="value">--</div>
-        <div id="aeratorState" class="pill idle">Standby</div>
-      </div>
-      <div class="card">
-        <div class="label"><span class="ico">🐟</span> Next Feeding</div>
-        <div id="countdown" class="value small">--:--:--</div>
-        <div id="feedModeLabel" class="pill mode">-- hour mode</div>
-      </div>
+      <div class="card"><div class="label"><span class="ico">🌡️</span> Temperature</div><div id="temp" class="value">--<span class="unit">°C</span></div><div id="tempStatus" class="pill idle">Waiting…</div></div>
+      <div class="card"><div class="label"><span class="ico">💧</span> pH Level</div><div id="ph" class="value">--</div><div id="phStatus" class="pill idle">Waiting…</div></div>
+      <div class="card"><div class="label"><span class="ico">🫧</span> Dissolved Oxygen</div><div id="do" class="value">--<span class="unit">mg/L</span></div></div>
+      <div class="card"><div class="label"><span class="ico">💨</span> Aerator</div><div id="aerator" class="value">--</div><div id="aeratorState" class="pill idle">Standby</div></div>
+      <div class="card"><div class="label"><span class="ico">🐟</span> Next Feeding</div><div id="countdown" class="value small">--:--:--</div><div id="feedModeLabel" class="pill mode">-- hour mode</div></div>
     </div>
   </section>
 
-  <!-- Feeding history -->
   <section>
-    <div class="section-head">
-      <h2>Feeding History</h2>
-      <p>Last 15 logged feeder activations.</p>
-    </div>
+    <div class="section-head"><h2>Feeding History</h2><p>Last 15 logged feeder activations.</p></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:60px;">#</th><th>Date &amp; Time</th><th style="width:180px;">Mode</th></tr></thead>
-        <tbody id="feedHistory">
-          <tr class="empty-row"><td colspan="3">Loading…</td></tr>
-        </tbody>
+        <tbody id="feedHistory"><tr class="empty-row"><td colspan="3">Loading…</td></tr></tbody>
       </table>
     </div>
   </section>
 
-  <!-- Growth calendar -->
   <section>
-    <div class="section-head">
-      <h2>Growth &amp; Feeding Calendar</h2>
-      <p>Tracks days since stocking and shows which days the fish were fed. Click a day to see details.</p>
-    </div>
+    <div class="section-head"><h2>Growth &amp; Feeding Calendar</h2><p>Tracks days since stocking and shows which days the fish were fed. Click a day to see details.</p></div>
     <div class="panel">
       <div class="growth-stats">
-        <div class="stat">
-          <div class="label">Days since stocking</div>
-          <div class="value green" id="gDay">--</div>
-        </div>
-        <div class="stat">
-          <div class="label">Feeding week</div>
-          <div class="value green" id="gWeek">--</div>
-        </div>
-        <div class="stat">
-          <div class="label">To harvest window</div>
-          <div class="value" id="gToHarvest">--</div>
-        </div>
+        <div class="stat"><div class="label">Days since stocking</div><div class="value green" id="gDay">--</div></div>
+        <div class="stat"><div class="label">Feeding week</div><div class="value green" id="gWeek">--</div></div>
+        <div class="stat"><div class="label">To harvest window</div><div class="value" id="gToHarvest">--</div></div>
       </div>
-
       <div class="progress-wrap">
-        <div class="progress-labels">
-          <span>Week 1</span>
-          <span id="progressMaxLabel">Week 12</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-band" id="progressBand"></div>
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
+        <div class="progress-labels"><span>Week 1</span><span id="progressMaxLabel">Week 12</span></div>
+        <div class="progress-track"><div class="progress-band" id="progressBand"></div><div class="progress-fill" id="progressFill"></div></div>
       </div>
-
       <div class="calendar-wrap">
-        <div class="calendar-header">
-          <button class="cal-nav" id="prevMonth">‹</button>
-          <div class="cal-title" id="calTitle">—</div>
-          <button class="cal-nav" id="nextMonth">›</button>
-        </div>
-        <div class="cal-weekdays">
-          <div>Su</div><div>Mo</div><div>Tu</div><div>We</div>
-          <div>Th</div><div>Fr</div><div>Sa</div>
-        </div>
+        <div class="calendar-header"><button class="cal-nav" id="prevMonth">‹</button><div class="cal-title" id="calTitle">—</div><button class="cal-nav" id="nextMonth">›</button></div>
+        <div class="cal-weekdays"><div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div></div>
         <div class="cal-grid" id="calGrid"></div>
-        <div class="legend">
-          <span><span class="sw" style="background:var(--green)"></span>Fed</span>
-          <span><span class="sw" style="background:var(--bg-soft);border:1px solid var(--line)"></span>No feed logged</span>
-          <span><span class="sw" style="background:var(--bg-card);border:2px solid var(--amber)"></span>Today</span>
-        </div>
+        <div class="legend"><span><span class="sw" style="background:var(--green)"></span>Fed</span><span><span class="sw" style="background:var(--bg-soft);border:1px solid var(--line)"></span>No feed logged</span><span><span class="sw" style="background:var(--bg-card);border:2px solid var(--amber)"></span>Today</span></div>
       </div>
     </div>
   </section>
@@ -317,42 +246,28 @@
   </footer>
 </div>
 
-<!-- Feed detail modal -->
 <div class="modal-overlay" id="feedModal">
   <div class="modal-box">
-    <h3 id="modalDate">—</h3>
-    <div class="count" id="modalCount">—</div>
-    <div class="modal-list" id="modalList"></div>
-    <button class="modal-close" id="modalCloseBtn">Close</button>
+    <h3 id="modalDate">—</h3><div class="count" id="modalCount">—</div><div class="modal-list" id="modalList"></div><button class="modal-close" id="modalCloseBtn">Close</button>
   </div>
 </div>
 
-<!-- Setup wizard modal -->
 <div class="modal-overlay" id="setupWizard">
   <div class="modal-box wide">
     <h3 id="wizardTitle">Set up feeding schedule</h3>
     <div class="count" id="wizardSubtitle">Enter the stocking date, harvest window, and grams per feed for weeks 1–12.</div>
-
     <div class="wizard-form">
       <div class="wizard-row">
-        <label>Stocking date
-          <input type="date" id="wizardStockingDate">
-        </label>
-        <label>Harvest from (week)
-          <input type="number" id="wizardHarvestStart" min="1" max="52" value="8">
-        </label>
-        <label>Harvest to (week)
-          <input type="number" id="wizardHarvestEnd" min="1" max="52" value="12">
-        </label>
-        <label>Servo rate (g / second)
-          <input type="number" id="wizardServoRate" min="0.1" max="20" step="0.1" value="2.0">
+        <label>Stocking date<input type="date" id="wizardStockingDate"></label>
+        <label>Harvest from (week)<input type="number" id="wizardHarvestStart" min="1" max="52" value="8"></label>
+        <label>Harvest to (week)<input type="number" id="wizardHarvestEnd" min="1" max="52" value="12"></label>
+        <label>Servo rate (g / second) - LOCKED
+          <input type="number" id="wizardServoRate" value="0.65" disabled style="background:#e5eaf0; cursor:not-allowed; color:#64748b;">
         </label>
       </div>
-
-      <div class="wizard-minihead">Feeding portions (grams per feed)</div>
+      <div class="wizard-minihead">Feeding portions (grams per feed) - Input must be within range</div>
       <div class="wizard-grid" id="wizardPortions"></div>
     </div>
-
     <div class="wizard-actions">
       <button class="modal-close wizard-cancel" id="wizardCancelBtn">Cancel</button>
       <button class="modal-close" id="wizardSaveBtn">Save schedule</button>
@@ -362,50 +277,31 @@
 
 <script>
 const API_BASE = "https://aquaponics-backend-sgr7.onrender.com";
-
-let nextFeedMs = null;
-let lastReceivedSeconds = null;
-let feedLogs = [];
-let appConfig = {
-  portions: [],
-  stockingDate: "",
-  harvestStart: 8,
-  harvestEnd: 12,
-  servoRate: 2.0,
-  cycleNumber: 1
-};
+let nextFeedMs = null; let lastReceivedSeconds = null; let feedLogs = [];
+let appConfig = { portions: [], stockingDate: "", harvestStart: 8, harvestEnd: 12, servoRate: 0.65, cycleNumber: 1 };
 let hasSavedConfig = false;
 
-function todayISO() {
-  const d = new Date();
-  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
-}
+// Min-Max Ranges based on adviser input
+const weeklyRanges = [
+  { week: 1, min: 0.6, max: 0.9 },  { week: 2, min: 1.0, max: 1.3 },
+  { week: 3, min: 1.3, max: 1.8 },  { week: 4, min: 1.7, max: 2.3 },
+  { week: 5, min: 2.2, max: 3.0 },  { week: 6, min: 3.1, max: 4.1 },
+  { week: 7, min: 3.5, max: 4.6 },  { week: 8, min: 4.5, max: 6.0 },
+  { week: 9, min: 4.8, max: 6.4 },  { week: 10, min: 6.0, max: 8.0 },
+  { week: 11, min: 7.5, max: 10.0 },{ week: 12, min: 6.8, max: 9.0 }
+];
 
-function getDaysSinceStocking() {
-  if (!appConfig.stockingDate) return -1;
-  const start = new Date(appConfig.stockingDate + "T00:00:00");
-  return Math.floor((new Date() - start) / 86400000);
-}
-
-function getCurrentWeek() {
-  const days = getDaysSinceStocking();
-  if (days < 0) return 0;
-  return Math.floor(days / 7) + 1;
-}
+function todayISO() { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"); }
+function getDaysSinceStocking() { if (!appConfig.stockingDate) return -1; const start = new Date(appConfig.stockingDate + "T00:00:00"); return Math.floor((new Date() - start) / 86400000); }
+function getCurrentWeek() { const days = getDaysSinceStocking(); if (days < 0) return 0; return Math.floor(days / 7) + 1; }
 
 function getStatusClass(status) {
   const s = (status || "").toUpperCase();
-  if (s.includes("LOW"))    return "pill low";
-  if (s.includes("HIGH"))   return "pill high";
-  if (s.includes("NORMAL")) return "pill normal";
-  return "pill idle";
+  if (s.includes("LOW")) return "pill low"; if (s.includes("HIGH")) return "pill high"; if (s.includes("NORMAL")) return "pill normal"; return "pill idle";
 }
 function prettyStatus(status) {
   const s = (status || "").toUpperCase();
-  if (s === "L" || s === "LOW") return "Too low";
-  if (s === "H" || s === "HIGH") return "Too high";
-  if (s === "N" || s === "NORMAL") return "Normal";
-  return status || "--";
+  if (s === "L" || s === "LOW") return "Too low"; if (s === "H" || s === "HIGH") return "Too high"; if (s === "N" || s === "NORMAL") return "Normal"; return status || "--";
 }
 
 function loadConfig() {
@@ -413,21 +309,9 @@ function loadConfig() {
   x.onload = function() {
     try {
       const data = JSON.parse(this.responseText);
-      appConfig = {
-        portions: data.portions || [],
-        stockingDate: data.stockingDate || "",
-        harvestStart: data.harvestStart || 8,
-        harvestEnd: data.harvestEnd || 12,
-        servoRate: data.servoRate || 2.0,
-        cycleNumber: data.cycleNumber || 1
-      };
+      appConfig = { portions: data.portions || [], stockingDate: data.stockingDate || "", harvestStart: data.harvestStart || 8, harvestEnd: data.harvestEnd || 12, servoRate: 0.65, cycleNumber: data.cycleNumber || 1 };
       hasSavedConfig = appConfig.portions.length === 12 && appConfig.stockingDate;
-
-      if (!hasSavedConfig) {
-        showWizard(false);
-      } else {
-        hideWizard();
-      }
+      if (!hasSavedConfig) showWizard(false); else hideWizard();
       refreshDerivedUI();
     } catch(e) { console.error(e); }
   };
@@ -436,169 +320,115 @@ function loadConfig() {
 }
 
 function showWizard(isEditing) {
-  const wiz = document.getElementById("setupWizard");
   document.getElementById("wizardTitle").innerText = isEditing ? "Edit feeding schedule" : "Set up feeding schedule";
-  document.getElementById("wizardSubtitle").innerText = isEditing
-    ? "Update the stocking date, harvest window, or weekly portions. Changes apply immediately."
-    : "Enter the stocking date, harvest window, and grams per feed for weeks 1–12.";
-
+  document.getElementById("wizardSubtitle").innerText = isEditing ? "Update the schedule. Changes apply immediately." : "Enter the stocking date and portions within the specified ranges.";
   document.getElementById("wizardStockingDate").value = appConfig.stockingDate || todayISO();
   document.getElementById("wizardHarvestStart").value = appConfig.harvestStart || 8;
   document.getElementById("wizardHarvestEnd").value   = appConfig.harvestEnd   || 12;
-  document.getElementById("wizardServoRate").value    = appConfig.servoRate    || 2.0;
 
   const grid = document.getElementById("wizardPortions");
   grid.innerHTML = "";
-  for (let i = 1; i <= 12; i++) {
-    const val = (appConfig.portions && appConfig.portions[i-1]) || "";
+  for (let i = 0; i < 12; i++) {
+    const range = weeklyRanges[i];
+    const savedVal = (appConfig.portions && appConfig.portions[i]) || ((range.min + range.max) / 2).toFixed(1);
     const label = document.createElement("label");
-    label.innerHTML = `Week ${i}
-      <input type="number" min="0" step="0.1" data-week="${i}" value="${val}" placeholder="grams">`;
+    label.innerHTML = `Week ${range.week} (${range.min}g - ${range.max}g)
+      <input type="number" min="${range.min}" max="${range.max}" step="0.1" data-week="${range.week}" value="${savedVal}">`;
     grid.appendChild(label);
   }
-
   document.getElementById("wizardCancelBtn").style.display = hasSavedConfig ? "block" : "none";
-  wiz.classList.add("active");
+  document.getElementById("setupWizard").classList.add("active");
 }
 
-function hideWizard() {
-  document.getElementById("setupWizard").classList.remove("active");
-}
+function hideWizard() { document.getElementById("setupWizard").classList.remove("active"); }
 
 function saveWizard() {
   const stockingDate = document.getElementById("wizardStockingDate").value;
   const harvestStart = parseInt(document.getElementById("wizardHarvestStart").value);
   const harvestEnd   = parseInt(document.getElementById("wizardHarvestEnd").value);
-  const servoRate    = parseFloat(document.getElementById("wizardServoRate").value) || 2.0;
-
   const portions = [];
-  document.querySelectorAll("#wizardPortions input").forEach(inp => {
-    portions.push(parseFloat(inp.value) || 0);
+  let isValid = true;
+
+  document.querySelectorAll("#wizardPortions input").forEach((inp, index) => {
+    const val = parseFloat(inp.value);
+    const range = weeklyRanges[index];
+    if (val < range.min || val > range.max || isNaN(val)) {
+      isValid = false; inp.style.borderColor = "red"; 
+    } else {
+      inp.style.borderColor = ""; portions.push(val);
+    }
   });
 
   if (!stockingDate) { alert("Please enter a stocking date."); return; }
   if (harvestStart >= harvestEnd) { alert("Harvest start week must be less than end week."); return; }
-  if (portions.every(p => p <= 0)) { alert("Please enter at least one portion value."); return; }
+  if (!isValid) { alert("Please enter a value within the specified range for each week (highlighted in red)."); return; }
 
+  // Servo rate is intentionally omitted from the URL so it can't be changed
   const url = API_BASE + "/api/set_config"
     + "?portions=" + portions.join(",")
     + "&stockingDate=" + encodeURIComponent(stockingDate)
     + "&harvestStart=" + harvestStart
-    + "&harvestEnd=" + harvestEnd
-    + "&servoRate=" + servoRate;
+    + "&harvestEnd=" + harvestEnd;
 
   const x = new XMLHttpRequest();
   x.onload = function() {
     if (this.status === 200) {
-      appConfig = { portions, stockingDate, harvestStart, harvestEnd, servoRate, cycleNumber: appConfig.cycleNumber };
-      hasSavedConfig = true;
-      hideWizard();
-      refreshDerivedUI();
-    } else {
-      alert("Save failed: " + this.responseText);
-    }
+      appConfig = { portions, stockingDate, harvestStart, harvestEnd, servoRate: 0.65, cycleNumber: appConfig.cycleNumber };
+      hasSavedConfig = true; hideWizard(); refreshDerivedUI();
+    } else { alert("Save failed: " + this.responseText); }
   };
   x.onerror = function() { alert("Network error while saving."); };
-  x.open("GET", url, true);
-  x.send();
+  x.open("GET", url, true); x.send();
 }
 
 function performHarvest() {
-  if (!confirm("Confirm harvest? This will end the current cycle and open a new setup wizard for the next batch.")) return;
-
+  if (!confirm("Confirm harvest? This will end the current cycle and open a new setup wizard.")) return;
   const x = new XMLHttpRequest();
   x.onload = function() {
     if (this.status === 200) {
-      appConfig.portions = [];
-      appConfig.stockingDate = "";
-      hasSavedConfig = false;
-      document.getElementById("harvestBanner").style.display = "none";
-      showWizard(false);
-    } else {
-      alert("Harvest failed: " + this.responseText);
-    }
+      appConfig.portions = []; appConfig.stockingDate = ""; hasSavedConfig = false;
+      document.getElementById("harvestBanner").style.display = "none"; showWizard(false);
+    } else { alert("Harvest failed: " + this.responseText); }
   };
-  x.onerror = function() { alert("Network error."); };
-  x.open("GET", API_BASE + "/api/harvest", true);
-  x.send();
+  x.open("GET", API_BASE + "/api/harvest", true); x.send();
 }
 
-function refreshDerivedUI() {
-  renderGrowthStats();
-  renderCalendar();
-  checkHarvestBanner();
-}
+function refreshDerivedUI() { renderGrowthStats(); renderCalendar(); checkHarvestBanner(); }
 
 function renderGrowthStats() {
-  const days = getDaysSinceStocking();
-  const week = days >= 0 ? Math.floor(days / 7) + 1 : 0;
-  const harvestMin = appConfig.harvestStart || 8;
-  const harvestMax = appConfig.harvestEnd   || 12;
-
+  const days = getDaysSinceStocking(); const week = days >= 0 ? Math.floor(days / 7) + 1 : 0;
+  const harvestMin = appConfig.harvestStart || 8; const harvestMax = appConfig.harvestEnd || 12;
   document.getElementById("gDay").innerText = days >= 0 ? days : "--";
   document.getElementById("gWeek").innerText = week > 0 ? week : "--";
-
   const daysToHarvest = (harvestMin * 7) - days;
-  const gEl = document.getElementById("gToHarvest");
-  gEl.style.color = "";
-
-  if (days < 0) {
-    gEl.innerText = "--";
-    gEl.className = "value";
-  } else if (daysToHarvest > 0) {
-    const weeks = Math.ceil(daysToHarvest / 7);
-    gEl.innerText = weeks + " wk";
-    gEl.title = daysToHarvest + " days";
-    gEl.className = "value green";
-  } else if (week <= harvestMax) {
-    gEl.innerText = "In window";
-    gEl.className = "value amber";
-  } else {
-    gEl.innerText = "Past window";
-    gEl.className = "value red";
-  }
-
-  const totalWeeks = Math.max(harvestMax, 1);
-  const pct = Math.min(100, Math.max(0, (week / totalWeeks) * 100));
-  document.getElementById("progressFill").style.width = pct + "%";
-  document.getElementById("progressMaxLabel").innerText = "Week " + totalWeeks;
-
-  const band = document.getElementById("progressBand");
-  const bLeft = Math.min(100, (harvestMin / totalWeeks) * 100);
-  const bRight = Math.min(100, (harvestMax / totalWeeks) * 100);
-  band.style.left = bLeft + "%";
-  band.style.width = Math.max(0, bRight - bLeft) + "%";
+  const gEl = document.getElementById("gToHarvest"); gEl.style.color = "";
+  if (days < 0) { gEl.innerText = "--"; gEl.className = "value"; }
+  else if (daysToHarvest > 0) { gEl.innerText = Math.ceil(daysToHarvest / 7) + " wk"; gEl.title = daysToHarvest + " days"; gEl.className = "value green"; }
+  else if (week <= harvestMax) { gEl.innerText = "In window"; gEl.className = "value amber"; }
+  else { gEl.innerText = "Past window"; gEl.className = "value red"; }
+  const totalWeeks = Math.max(harvestMax, 1); const pct = Math.min(100, Math.max(0, (week / totalWeeks) * 100));
+  document.getElementById("progressFill").style.width = pct + "%"; document.getElementById("progressMaxLabel").innerText = "Week " + totalWeeks;
+  const band = document.getElementById("progressBand"); const bLeft = Math.min(100, (harvestMin / totalWeeks) * 100); const bRight = Math.min(100, (harvestMax / totalWeeks) * 100);
+  band.style.left = bLeft + "%"; band.style.width = Math.max(0, bRight - bLeft) + "%";
 }
 
 function checkHarvestBanner() {
-  const banner = document.getElementById("harvestBanner");
-  const msg = document.getElementById("harvestBannerMsg");
+  const banner = document.getElementById("harvestBanner"); const msg = document.getElementById("harvestBannerMsg");
   if (!hasSavedConfig) { banner.style.display = "none"; return; }
-
-  const week = getCurrentWeek();
-  const start = appConfig.harvestStart || 8;
-  const end = appConfig.harvestEnd || 12;
-
+  const week = getCurrentWeek(); const start = appConfig.harvestStart || 8; const end = appConfig.harvestEnd || 12;
   if (week < start) { banner.style.display = "none"; return; }
-
   banner.style.display = "flex";
-  if (week <= end) {
-    msg.innerText = `Fish are ready to harvest — week ${week} of the harvest window (${start}–${end}).`;
-  } else {
-    msg.innerText = `Harvest window passed — fish are overdue. Current week: ${week}, window ended at week ${end}.`;
-  }
+  if (week <= end) msg.innerText = `Fish are ready to harvest — week ${week} of the harvest window (${start}–${end}).`;
+  else msg.innerText = `Harvest window passed — fish are overdue. Current week: ${week}, window ended at week ${end}.`;
 }
 
 function startCountdown() {
   setInterval(() => {
     if (nextFeedMs === null) return;
     const remaining = Math.max(0, nextFeedMs - Date.now());
-    const h = Math.floor(remaining / 3600000);
-    const m = Math.floor((remaining % 3600000) / 60000);
-    const s = Math.floor((remaining % 60000) / 1000);
+    const h = Math.floor(remaining / 3600000); const m = Math.floor((remaining % 3600000) / 60000); const s = Math.floor((remaining % 60000) / 1000);
     const pad = n => String(n).padStart(2, '0');
-    document.getElementById("countdown").innerText =
-      remaining === 0 ? "FEEDING…" : `${pad(h)}:${pad(m)}:${pad(s)}`;
+    document.getElementById("countdown").innerText = remaining === 0 ? "FEEDING…" : `${pad(h)}:${pad(m)}:${pad(s)}`;
   }, 1000);
 }
 
@@ -608,233 +438,108 @@ function loadDoc() {
     try {
       const data = JSON.parse(this.responseText);
       const stamp = new Date().toLocaleTimeString("en-PH", { hour12: true });
-      document.getElementById("lastUpdate").innerText = "Live · " + stamp;
-      document.getElementById("lastUpdateFooter").innerText = "Last update: " + stamp;
+      document.getElementById("lastUpdate").innerText = "Live · " + stamp; document.getElementById("lastUpdateFooter").innerText = "Last update: " + stamp;
       document.getElementById("liveDot").classList.add("live");
-
       document.getElementById("temp").innerHTML = (data.temp ?? "--") + "<span class='unit'>°C</span>";
       document.getElementById("ph").innerText   = data.ph ?? "--";
       document.getElementById("do").innerHTML   = (data.do ?? "--") + "<span class='unit'>mg/L</span>";
-
-      let tEl = document.getElementById("tempStatus");
-      tEl.innerText = prettyStatus(data.tempStatus);
-      tEl.className = getStatusClass(data.tempStatus);
-
-      let pEl = document.getElementById("phStatus");
-      pEl.innerText = prettyStatus(data.phStatus);
-      pEl.className = getStatusClass(data.phStatus);
-
-      let doValue = parseFloat(data.do);
-      const aer = (data.aerator_status || "").toUpperCase();
-      const aerEl = document.getElementById("aerator");
-      const aerStateEl = document.getElementById("aeratorState");
+      let tEl = document.getElementById("tempStatus"); tEl.innerText = prettyStatus(data.tempStatus); tEl.className = getStatusClass(data.tempStatus);
+      let pEl = document.getElementById("phStatus"); pEl.innerText = prettyStatus(data.phStatus); pEl.className = getStatusClass(data.phStatus);
+      let doValue = parseFloat(data.do); const aer = (data.aerator_status || "").toUpperCase();
+      const aerEl = document.getElementById("aerator"); const aerStateEl = document.getElementById("aeratorState");
       if (aer === "ON" || aer === "OFF") {
-        aerEl.innerText = aer;
-        aerStateEl.innerText = aer === "ON" ? "Running" : "Standby";
-        aerStateEl.className = aer === "ON" ? "pill on" : "pill idle";
+        aerEl.innerText = aer; aerStateEl.innerText = aer === "ON" ? "Running" : "Standby"; aerStateEl.className = aer === "ON" ? "pill on" : "pill idle";
       } else if (!isNaN(doValue)) {
-        const guess = doValue >= 4.5 ? "OFF" : "ON";
-        aerEl.innerText = guess;
-        aerStateEl.innerText = guess === "ON" ? "Running" : "Standby";
-        aerStateEl.className = guess === "ON" ? "pill on" : "pill idle";
-      } else {
-        aerEl.innerText = "--";
-        aerStateEl.innerText = "Standby";
-        aerStateEl.className = "pill idle";
-      }
-
+        const guess = doValue >= 4.5 ? "OFF" : "ON"; aerEl.innerText = guess; aerStateEl.innerText = guess === "ON" ? "Running" : "Standby"; aerStateEl.className = guess === "ON" ? "pill on" : "pill idle";
+      } else { aerEl.innerText = "--"; aerStateEl.innerText = "Standby"; aerStateEl.className = "pill idle"; }
       if (data.seconds_until_feed !== undefined && data.seconds_until_feed !== null) {
         const incoming = parseInt(data.seconds_until_feed);
-        if (lastReceivedSeconds === null || Math.abs(incoming - lastReceivedSeconds) > 7) {
-          nextFeedMs = Date.now() + (incoming * 1000);
-        }
+        if (lastReceivedSeconds === null || Math.abs(incoming - lastReceivedSeconds) > 7) nextFeedMs = Date.now() + (incoming * 1000);
         lastReceivedSeconds = incoming;
       }
-
-      if (data.mode) {
-        document.getElementById("feedModeLabel").innerText = data.mode + " hour mode";
-      }
-    } catch (e) {
-      console.log(e);
-      document.getElementById("liveDot").classList.remove("live");
-    }
+      if (data.mode) document.getElementById("feedModeLabel").innerText = data.mode + " hour mode";
+    } catch (e) { console.log(e); document.getElementById("liveDot").classList.remove("live"); }
   };
-  x.onerror = function() {
-    document.getElementById("liveDot").classList.remove("live");
-    document.getElementById("lastUpdate").innerText = "Connection error";
-  };
-  x.open("GET", API_BASE + "/api/r_sensor?t=" + Date.now(), true);
-  x.send();
+  x.onerror = function() { document.getElementById("liveDot").classList.remove("live"); document.getElementById("lastUpdate").innerText = "Connection error"; };
+  x.open("GET", API_BASE + "/api/r_sensor?t=" + Date.now(), true); x.send();
 }
 
 function loadFeedHistory() {
   const x = new XMLHttpRequest();
   x.onload = function() {
     try {
-      const data = JSON.parse(this.responseText);
-      const tbody = document.getElementById("feedHistory");
-      feedLogs = data;
-      renderCalendar();
-
-      if (data.length === 0) {
-        tbody.innerHTML = "<tr class='empty-row'><td colspan='3'>No feedings logged yet</td></tr>";
-        return;
-      }
-
+      const data = JSON.parse(this.responseText); const tbody = document.getElementById("feedHistory");
+      feedLogs = data; renderCalendar();
+      if (data.length === 0) { tbody.innerHTML = "<tr class='empty-row'><td colspan='3'>No feedings logged yet</td></tr>"; return; }
       let html = "";
       data.slice(0, 15).forEach((row, index) => {
-        const dt = new Date(row.feed_time + " UTC").toLocaleString("en-PH", {
-          timeZone: "Asia/Manila",
-          year: "numeric", month: "2-digit", day: "2-digit",
-          hour: "2-digit", minute: "2-digit", second: "2-digit",
-          hour12: false
-        });
-        html += `<tr>
-          <td class="td-num">${index + 1}</td>
-          <td class="td-mono">${dt}</td>
-          <td><span class="mode-tag">${row.mode}H mode</span></td>
-        </tr>`;
+        const dt = new Date(row.feed_time + " UTC").toLocaleString("en-PH", { timeZone: "Asia/Manila", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+        html += `<tr><td class="td-num">${index + 1}</td><td class="td-mono">${dt}</td><td><span class="mode-tag">${row.mode}H mode</span></td></tr>`;
       });
       tbody.innerHTML = html;
     } catch(e) { console.log(e); }
   };
-  x.open("GET", API_BASE + "/api/r_feed?t=" + Date.now(), true);
-  x.send();
+  x.open("GET", API_BASE + "/api/r_feed?t=" + Date.now(), true); x.send();
 }
 
 let calendarCursor = new Date();
-
 function setupCalendarNav() {
-  document.getElementById("prevMonth").addEventListener("click", () => {
-    calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() - 1, 1);
-    renderCalendar();
-  });
-  document.getElementById("nextMonth").addEventListener("click", () => {
-    calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() + 1, 1);
-    renderCalendar();
-  });
+  document.getElementById("prevMonth").addEventListener("click", () => { calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() - 1, 1); renderCalendar(); });
+  document.getElementById("nextMonth").addEventListener("click", () => { calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() + 1, 1); renderCalendar(); });
 }
 
 function renderCalendar() {
-  const grid = document.getElementById("calGrid");
-  const title = document.getElementById("calTitle");
-  if (!grid) return;
-  grid.innerHTML = "";
-
-  const year = calendarCursor.getFullYear();
-  const month = calendarCursor.getMonth();
-
+  const grid = document.getElementById("calGrid"); const title = document.getElementById("calTitle");
+  if (!grid) return; grid.innerHTML = "";
+  const year = calendarCursor.getFullYear(); const month = calendarCursor.getMonth();
   title.innerText = calendarCursor.toLocaleString("en-PH", { month: "long", year: "numeric" });
-
-  const stockingVal = appConfig.stockingDate;
-  const stocking = stockingVal ? new Date(stockingVal + "T00:00:00") : null;
-
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
+  const stockingVal = appConfig.stockingDate; const stocking = stockingVal ? new Date(stockingVal + "T00:00:00") : null;
+  const now = new Date(); const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const feedsByDay = {};
   feedLogs.forEach(row => {
-    const d = new Date(row.feed_time + " UTC");
-    const pht = new Date(d.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+    const d = new Date(row.feed_time + " UTC"); const pht = new Date(d.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
     const key = pht.getFullYear() + "-" + pht.getMonth() + "-" + pht.getDate();
     if (!feedsByDay[key]) feedsByDay[key] = [];
-    feedsByDay[key].push({
-      time: pht.toLocaleTimeString("en-PH", {
-        timeZone: "Asia/Manila", hour: "2-digit", minute: "2-digit", hour12: true
-      }),
-      mode: row.mode
-    });
+    feedsByDay[key].push({ time: pht.toLocaleTimeString("en-PH", { timeZone: "Asia/Manila", hour: "2-digit", minute: "2-digit", hour12: true }), mode: row.mode });
   });
-
-  const firstDay = new Date(year, month, 1);
-  const startWeekday = firstDay.getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  for (let i = 0; i < startWeekday; i++) {
-    const c = document.createElement("div");
-    c.className = "cal-cell empty";
-    grid.appendChild(c);
-  }
-
+  const firstDay = new Date(year, month, 1); const startWeekday = firstDay.getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
+  for (let i = 0; i < startWeekday; i++) { const c = document.createElement("div"); c.className = "cal-cell empty"; grid.appendChild(c); }
   for (let day = 1; day <= daysInMonth; day++) {
-    const cellDate = new Date(year, month, day);
-    const key = cellDate.getFullYear() + "-" + cellDate.getMonth() + "-" + cellDate.getDate();
-
-    const cell = document.createElement("div");
-    cell.className = "cal-cell";
-    cell.innerText = day;
-
-    if (cellDate.getTime() === today.getTime()) cell.classList.add("today");
-    else if (cellDate > today) cell.classList.add("future");
-    else if (stocking && cellDate < stocking) cell.classList.add("pre-stock");
-
-    const dayFeeds = feedsByDay[key] || [];
-    if (dayFeeds.length > 0) cell.classList.add("fed");
-
-    const isFuture = cellDate > today;
-    const isPreStock = stocking && cellDate < stocking;
-
-    if (!isFuture && !isPreStock) {
-      cell.classList.add("clickable");
-      cell.addEventListener("click", () => openFeedModal(dayFeeds, year, month, day));
-    }
-
+    const cellDate = new Date(year, month, day); const key = cellDate.getFullYear() + "-" + cellDate.getMonth() + "-" + cellDate.getDate();
+    const cell = document.createElement("div"); cell.className = "cal-cell"; cell.innerText = day;
+    if (cellDate.getTime() === today.getTime()) cell.classList.add("today"); else if (cellDate > today) cell.classList.add("future"); else if (stocking && cellDate < stocking) cell.classList.add("pre-stock");
+    const dayFeeds = feedsByDay[key] || []; if (dayFeeds.length > 0) cell.classList.add("fed");
+    const isFuture = cellDate > today; const isPreStock = stocking && cellDate < stocking;
+    if (!isFuture && !isPreStock) { cell.classList.add("clickable"); cell.addEventListener("click", () => openFeedModal(dayFeeds, year, month, day)); }
     grid.appendChild(cell);
   }
 }
 
 function openFeedModal(feeds, y, m, d) {
-  const dateStr = new Date(y, m, d).toLocaleDateString("en-US", {
-    weekday: "long", year: "numeric", month: "long", day: "numeric"
-  });
+  const dateStr = new Date(y, m, d).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
   document.getElementById("modalDate").innerText = dateStr;
-  const list = document.getElementById("modalList");
-  list.innerHTML = "";
-
+  const list = document.getElementById("modalList"); list.innerHTML = "";
   if (feeds.length === 0) {
-    document.getElementById("modalCount").innerText = "No feeds logged";
-    list.innerHTML = `<div class="modal-empty">No feeding was recorded on this day.</div>`;
+    document.getElementById("modalCount").innerText = "No feeds logged"; list.innerHTML = `<div class="modal-empty">No feeding was recorded on this day.</div>`;
   } else {
-    document.getElementById("modalCount").innerText =
-      feeds.length + (feeds.length === 1 ? " feed logged" : " feeds logged");
+    document.getElementById("modalCount").innerText = feeds.length + (feeds.length === 1 ? " feed logged" : " feeds logged");
     feeds.forEach(f => {
-      const row = document.createElement("div");
-      row.className = "feed-item";
-      row.innerHTML = `<span class="time">${f.time}</span><span class="mode">${f.mode}H mode</span>`;
-      list.appendChild(row);
+      const row = document.createElement("div"); row.className = "feed-item"; row.innerHTML = `<span class="time">${f.time}</span><span class="mode">${f.mode}H mode</span>`; list.appendChild(row);
     });
   }
   document.getElementById("feedModal").classList.add("active");
 }
 
-function closeFeedModal() {
-  document.getElementById("feedModal").classList.remove("active");
-}
-
-document.getElementById("modalCloseBtn").addEventListener("click", closeFeedModal);
-document.getElementById("feedModal").addEventListener("click", (e) => {
-  if (e.target.id === "feedModal") closeFeedModal();
-});
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeFeedModal(); });
-
+document.getElementById("modalCloseBtn").addEventListener("click", () => document.getElementById("feedModal").classList.remove("active"));
+document.getElementById("feedModal").addEventListener("click", (e) => { if (e.target.id === "feedModal") document.getElementById("feedModal").classList.remove("active"); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") document.getElementById("feedModal").classList.remove("active"); });
 document.getElementById("wizardSaveBtn").addEventListener("click", saveWizard);
-document.getElementById("wizardCancelBtn").addEventListener("click", () => {
-  if (hasSavedConfig) hideWizard();
-});
+document.getElementById("wizardCancelBtn").addEventListener("click", () => { if (hasSavedConfig) hideWizard(); });
 document.getElementById("editScheduleBtn").addEventListener("click", () => showWizard(true));
 document.getElementById("harvestNowBtn").addEventListener("click", performHarvest);
 
-loadConfig();
-loadDoc();
-startCountdown();
-loadFeedHistory();
-setupCalendarNav();
-renderCalendar();
-
-setInterval(loadDoc, 1000);
-setInterval(loadFeedHistory, 10000);
-setInterval(checkHarvestBanner, 60000);
+loadConfig(); loadDoc(); startCountdown(); loadFeedHistory(); setupCalendarNav(); renderCalendar();
+setInterval(loadDoc, 1000); setInterval(loadFeedHistory, 10000); setInterval(checkHarvestBanner, 60000);
 </script>
-
 </body>
 </html>
