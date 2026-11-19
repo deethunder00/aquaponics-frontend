@@ -262,7 +262,7 @@
         <label>Harvest from (week)<input type="number" id="wizardHarvestStart" min="1" max="52" value="8"></label>
         <label>Harvest to (week)<input type="number" id="wizardHarvestEnd" min="1" max="52" value="12"></label>
         <label>Servo rate (g / second) - LOCKED
-          <input type="number" id="wizardServoRate" value="0.65" disabled style="background:#e5eaf0; cursor:not-allowed; color:#64748b;">
+          <input type="number" id="wizardServoRate" value="0.461" disabled style="background:#e5eaf0; cursor:not-allowed; color:#64748b;">
         </label>
       </div>
       <div class="wizard-minihead">Feeding portions (grams per feed) - Input must be within range</div>
@@ -278,7 +278,7 @@
 <script>
 const API_BASE = "https://aquaponics-backend-sgr7.onrender.com";
 let nextFeedMs = null; let lastReceivedSeconds = null; let feedLogs = [];
-let appConfig = { portions: [], stockingDate: "", harvestStart: 8, harvestEnd: 12, servoRate: 0.65, cycleNumber: 1 };
+let appConfig = { portions: [], stockingDate: "", harvestStart: 8, harvestEnd: 12, servoRate: 0.461, cycleNumber: 1 };
 let hasSavedConfig = false;
 
 // Min-Max Ranges based on adviser input
@@ -309,7 +309,7 @@ function loadConfig() {
   x.onload = function() {
     try {
       const data = JSON.parse(this.responseText);
-      appConfig = { portions: data.portions || [], stockingDate: data.stockingDate || "", harvestStart: data.harvestStart || 8, harvestEnd: data.harvestEnd || 12, servoRate: 0.65, cycleNumber: data.cycleNumber || 1 };
+      appConfig = { portions: data.portions || [], stockingDate: data.stockingDate || "", harvestStart: data.harvestStart || 8, harvestEnd: data.harvestEnd || 12, servoRate: 0.461, cycleNumber: data.cycleNumber || 1 };
       hasSavedConfig = appConfig.portions.length === 12 && appConfig.stockingDate;
       if (!hasSavedConfig) showWizard(false); else hideWizard();
       refreshDerivedUI();
@@ -373,7 +373,7 @@ function saveWizard() {
   const x = new XMLHttpRequest();
   x.onload = function() {
     if (this.status === 200) {
-      appConfig = { portions, stockingDate, harvestStart, harvestEnd, servoRate: 0.65, cycleNumber: appConfig.cycleNumber };
+      appConfig = { portions, stockingDate, harvestStart, harvestEnd, servoRate: 0.461, cycleNumber: appConfig.cycleNumber };
       hasSavedConfig = true; hideWizard(); refreshDerivedUI();
     } else { alert("Save failed: " + this.responseText); }
   };
