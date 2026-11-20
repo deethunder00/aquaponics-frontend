@@ -275,9 +275,18 @@
   </div>
 </div>
 
+<script src="./dashboard-device.js"></script>
 <script>
-const API_BASE = "https://aquaponics-backend-sgr7.onrender.com";
-let nextFeedMs = null; let lastReceivedSeconds = null; let feedLogs = [];
+// Same origin when served by this backend, or use the existing Render API
+// when the frontend is on Vercel. Override window.AQUAPONICS_API_BASE if needed.
+const API_BASE = window.AQUAPONICS_API_BASE ?? (
+  ["localhost", "127.0.0.1", "aquaponics-backend-sgr7.onrender.com"].includes(location.hostname)
+    ? "" : "https://aquaponics-backend-sgr7.onrender.com"
+);
+const deviceCountdown = new DeviceCountdown();
+let sensorRequestPending = false;
+let hasDeviceSample = false;
+let feedLogs = [];
 let appConfig = { portions: [], stockingDate: "", harvestStart: 8, harvestEnd: 12, servoRate: 0.461, cycleNumber: 1 };
 let hasSavedConfig = false;
 
@@ -321,7 +330,7 @@ function loadConfig() {
 
 function showWizard(isEditing) {
   document.getElementById("wizardTitle").innerText = isEditing ? "Edit feeding schedule" : "Set up feeding schedule";
-  document.getElementById("wizardSubtitle").innerText = isEditing ? "Update the schedule. Changes apply immediately." : "Enter the stocking date and portions within the specified ranges.";
+  document.getElementById("wizardSubtitle").innerText = isEditing ? "Update the schedule. Changes apply when the device syncs." : "Enter the stocking date and portions within the specified ranges.";
   document.getElementById("wizardStockingDate").value = appConfig.stockingDate || todayISO();
   document.getElementById("wizardHarvestStart").value = appConfig.harvestStart || 8;
   document.getElementById("wizardHarvestEnd").value   = appConfig.harvestEnd   || 12;
@@ -422,24 +431,44 @@ function checkHarvestBanner() {
   else msg.innerText = `Harvest window passed — fish are overdue. Current week: ${week}, window ended at week ${end}.`;
 }
 
+function renderDeviceState() {
+  const now = performance.now();
+  const online = deviceCountdown.isOnline(now);
+  document.getElementById("countdown").innerText = deviceCountdown.label(now);
+  document.getElementById("liveDot").classList.toggle("live", online);
+  document.getElementById("lastUpdate").innerText = online
+    ? "Device online" : hasDeviceSample ? "Device offline · last readings shown" : "Waiting for device";
+}
+
 function startCountdown() {
-  setInterval(() => {
-    if (nextFeedMs === null) return;
-    const remaining = Math.max(0, nextFeedMs - Date.now());
-    const h = Math.floor(remaining / 3600000); const m = Math.floor((remaining % 3600000) / 60000); const s = Math.floor((remaining % 60000) / 1000);
-    const pad = n => String(n).padStart(2, '0');
-    document.getElementById("countdown").innerText = remaining === 0 ? "FEEDING…" : `${pad(h)}:${pad(m)}:${pad(s)}`;
-  }, 1000);
+  renderDeviceState();
+  setInterval(renderDeviceState, 250);
 }
 
 function loadDoc() {
+  if (sensorRequestPending) return;
+  sensorRequestPending = true;
   const x = new XMLHttpRequest();
+  x.timeout = 10000;
+  const failed = () => {
+    sensorRequestPending = false;
+    deviceCountdown.disconnect();
+    renderDeviceState();
+    document.getElementById("lastUpdate").innerText = "Backend connection error";
+  };
   x.onload = function() {
+    sensorRequestPending = false;
+    if (this.status !== 200) { failed(); return; }
     try {
       const data = JSON.parse(this.responseText);
-      const stamp = new Date().toLocaleTimeString("en-PH", { hour12: true });
-      document.getElementById("lastUpdate").innerText = "Live · " + stamp; document.getElementById("lastUpdateFooter").innerText = "Last update: " + stamp;
-      document.getElementById("liveDot").classList.add("live");
+      if (data.error) throw new Error(data.error);
+      hasDeviceSample = !!data.date_created;
+      deviceCountdown.update(data, performance.now());
+      const sampleTime = data.sample_at || data.date_created;
+      document.getElementById("lastUpdateFooter").innerText = sampleTime
+        ? "Last device reading: " + new Date(sampleTime).toLocaleTimeString("en-PH", { hour12: true })
+        : "No device readings received yet";
+      renderDeviceState();
       document.getElementById("temp").innerHTML = (data.temp ?? "--") + "<span class='unit'>°C</span>";
       document.getElementById("ph").innerText   = data.ph ?? "--";
       document.getElementById("do").innerHTML   = (data.do ?? "--") + "<span class='unit'>mg/L</span>";
@@ -452,15 +481,11 @@ function loadDoc() {
       } else if (!isNaN(doValue)) {
         const guess = doValue >= 4.5 ? "OFF" : "ON"; aerEl.innerText = guess; aerStateEl.innerText = guess === "ON" ? "Running" : "Standby"; aerStateEl.className = guess === "ON" ? "pill on" : "pill idle";
       } else { aerEl.innerText = "--"; aerStateEl.innerText = "Standby"; aerStateEl.className = "pill idle"; }
-      if (data.seconds_until_feed !== undefined && data.seconds_until_feed !== null) {
-        const incoming = parseInt(data.seconds_until_feed);
-        if (lastReceivedSeconds === null || Math.abs(incoming - lastReceivedSeconds) > 7) nextFeedMs = Date.now() + (incoming * 1000);
-        lastReceivedSeconds = incoming;
-      }
       if (data.mode) document.getElementById("feedModeLabel").innerText = data.mode + " hour mode";
-    } catch (e) { console.log(e); document.getElementById("liveDot").classList.remove("live"); }
+    } catch (e) { console.log(e); failed(); }
   };
-  x.onerror = function() { document.getElementById("liveDot").classList.remove("live"); document.getElementById("lastUpdate").innerText = "Connection error"; };
+  x.onerror = failed;
+  x.ontimeout = failed;
   x.open("GET", API_BASE + "/api/r_sensor?t=" + Date.now(), true); x.send();
 }
 
@@ -539,7 +564,7 @@ document.getElementById("editScheduleBtn").addEventListener("click", () => showW
 document.getElementById("harvestNowBtn").addEventListener("click", performHarvest);
 
 loadConfig(); loadDoc(); startCountdown(); loadFeedHistory(); setupCalendarNav(); renderCalendar();
-setInterval(loadDoc, 1000); setInterval(loadFeedHistory, 10000); setInterval(checkHarvestBanner, 60000);
+setInterval(loadDoc, 2000); setInterval(loadFeedHistory, 10000); setInterval(checkHarvestBanner, 60000);
 </script>
 </body>
 </html>
